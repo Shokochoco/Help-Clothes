@@ -3,10 +3,10 @@ import UIKit
 import Alamofire
 
 protocol WeatherDelegate {
-   func didUpdateWeather(_ requests: Requests,weather: WeatherModel)
+   func didUpdateWeather(_ requests: WeatherManager,weather: WeatherModel)
 }
 
-struct Requests {
+struct WeatherManager {
 
     var delegate: WeatherDelegate?
 
