@@ -19,11 +19,27 @@ class WeatherViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
     }
+    
     @IBAction func searchButtonTapped(_ sender: Any) {
         searchTextField.endEditing(true)
     }
+
     @IBAction func locationButtonTapped(_ sender: Any) {
         locationManager.requestLocation()
+    }
+
+    @IBAction func styleButton1Tapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "StyleScreen1", bundle: nil)
+        guard let screen1 = storyboard.instantiateViewController(withIdentifier: "StyleScreen1") as? StyleScreen1ViewController else { return }
+        self.present(screen1, animated: true, completion: nil)
+
+    }
+
+    @IBAction func styleButton2Tapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "StyleScreen2", bundle: nil)
+        guard let screen2 = storyboard.instantiateViewController(withIdentifier: "StyleScreen2") as? StyleScreen2ViewController else { return }
+        self.present(screen2, animated: true, completion: nil)
+
     }
 
 }
