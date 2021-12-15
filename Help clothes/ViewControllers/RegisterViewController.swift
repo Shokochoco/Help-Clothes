@@ -21,7 +21,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
         super.viewDidLoad()
         pickerView.delegate = self
         pickerView.dataSource = self
-        print("documentDirectoryFileURL\(documentDirectoryFileURL)")
     }
 
     @IBAction func selectPhotoTapped(_ sender: Any) {
@@ -36,22 +35,27 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as! UIImage
-        photoImage.image = image
+        let resizedImage = image.resized(withPercentage: 0.1)
+        photoImage.image = resizedImage
         self.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func registerButtonTapped(_ sender: Any) {
 
-        saveImage()
+//        saveImage()
+        
         let itemLow = pickerView.selectedRow(inComponent: 0)
         let tempLow = pickerView.selectedRow(inComponent: 1)
+        let pngUIImage = photoImage?.image?.pngData()
 
         let realm = try! Realm()
         let realmData = RealmDataModel()
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
 
         realmData.itemData = leftData[itemLow]
         realmData.tempData = rightData[tempLow]
-        realmData.photoData =  documentDirectoryFileURL.absoluteString
+//        realmData.photoData =  documentDirectoryFileURL.absoluteString
+        realmData.photoData = pngUIImage
 
         do{
             try realm.write{
@@ -64,26 +68,27 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
         self.dismiss(animated: true, completion: nil)
     }
     //保存するためのパスを作成する
-    func createLocalDataFile() {
-        // 作成するテキストファイルの名前
-        let fileName = "\(NSUUID().uuidString).png"
-        // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
-        let path = documentDirectoryFileURL.appendingPathComponent(fileName)
-        documentDirectoryFileURL = path
-        print("createLocalData:\(documentDirectoryFileURL)")
-    }
+//    func createLocalDataFile() {
+//        // 作成するテキストファイルの名前
+//        let fileName = "\(NSUUID().uuidString).png"
+//        // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
+//        let path = documentDirectoryFileURL.appendingPathComponent(fileName)
+//        documentDirectoryFileURL = path
+//        print("createLocalData:\(documentDirectoryFileURL)")
+//    }
+
     //画像を保存する関数の部分
-    func saveImage() {
-        createLocalDataFile()
-        //pngで保存する場合
-        let pngImageData = photoImage.image?.pngData()
-        do {
-            try pngImageData!.write(to: documentDirectoryFileURL)
-            print("createLocalData:\(documentDirectoryFileURL)")
-        } catch {
-            print("PNGエラー")
-        }
-    }
+//    func saveImage() {
+//        createLocalDataFile()
+//        //pngで保存する場合
+//        let pngImageData = photoImage.image?.pngData()
+//        do {
+//            try pngImageData!.write(to: documentDirectoryFileURL)
+//            print("createLocalData:\(documentDirectoryFileURL)")
+//        } catch {
+//            print("PNGエラー")
+//        }
+//    }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -145,4 +150,14 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
     }
 
+}
+
+extension UIImage {
+    //データサイズを変更する
+    func resized(withPercentage percentage: CGFloat) -> UIImage? {
+        let canvas = CGSize(width: size.width * percentage, height: size.height * percentage)
+        return UIGraphicsImageRenderer(size: canvas, format: imageRendererFormat).image {
+            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        }
+    }
 }

@@ -62,7 +62,9 @@ class PhotoCollectionView: UIViewController {
 extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        6 // result.count
+        let realm = try! Realm()
+        let result = realm.objects(RealmDataModel.self)
+        return result.count
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -71,8 +73,19 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     //　セルの中身
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionViewCell
-        cell.backgroundColor = .lightGray
+        let realm = try! Realm()
+        let result = realm.objects(RealmDataModel.self)
+
         cell.setUp()
+
+        if let ImageData = UIImage(data: result[indexPath.row].photoData!) {
+
+            cell.stylePhoto.image = ImageData
+            cell.backgroundColor = .lightGray
+        } else {
+            cell.backgroundColor = .lightGray
+        }
+
         return cell
     }
 
@@ -120,65 +133,3 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     }
 
 }
-
-
-//extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 3
-//    }
-//
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 3
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionViewCell
-//        let realm = try! Realm()
-//        let result = realm.objects(RealmDataModel.self)
-//
-//        var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//        do {
-//            let urls = try FileManager.default.contentsOfDirectory(at:documentDirectoryFileURL, includingPropertiesForKeys: nil)
-//            let filePath = urls[16].path
-//            print(filePath)
-//            cell.stylePhoto.image = UIImage(contentsOfFile: filePath)
-//        } catch let error {
-//            print(error)
-//        }
-//        //URL型にキャスト
-////        let fileURL = URL(string: result[indexPath.row].photoData)
-//
-//        //パス型に変換
-////        let filePath = fileURL?.path
-//
-//        cell.setUp()
-//        cell.backgroundColor = .lightGray
-////        cell.stylePhoto.image = UIImage(contentsOfFile: filePath!)
-//        return cell
-//    }
-//    //　セクションの中身
-//        func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader", for: indexPath) as? SectionHeader else {
-//                fatalError("エラー")
-//            }
-//
-//            if kind == UICollectionView.elementKindSectionHeader {
-//                header.sectionLabel.text = "section \(indexPath.section)"
-//                return header
-//            }
-//            return UICollectionReusableView()
-//        }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let cellWidth:CGFloat = self.view.frame.width/2.5
-//        let cellHeight:CGFloat = self.view.frame.width/2
-//        return CGSize(width: cellWidth, height: cellHeight)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//            //外枠のマージン
-//        return UIEdgeInsets(top: 0 , left: 10 , bottom: 0 , right: 10 )
-//        }
-//
-//}
