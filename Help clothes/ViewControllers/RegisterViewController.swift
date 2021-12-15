@@ -67,12 +67,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     func createLocalDataFile() {
         // 作成するテキストファイルの名前
         let fileName = "\(NSUUID().uuidString).png"
-        // DocumentディレクトリのfileURLを取得
-        if documentDirectoryFileURL != nil {
-            // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
-            let path = documentDirectoryFileURL.appendingPathComponent(fileName)
-            documentDirectoryFileURL = path
-        }
+        // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
+        let path = documentDirectoryFileURL.appendingPathComponent(fileName)
+        documentDirectoryFileURL = path
+        print("createLocalData:\(documentDirectoryFileURL)")
     }
     //画像を保存する関数の部分
     func saveImage() {
@@ -81,6 +79,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
         let pngImageData = photoImage.image?.pngData()
         do {
             try pngImageData!.write(to: documentDirectoryFileURL)
+            print("createLocalData:\(documentDirectoryFileURL)")
         } catch {
             print("PNGエラー")
         }

@@ -60,6 +60,7 @@ class PhotoCollectionView: UIViewController {
 
 // MARK: - CollectionView
 extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         6 // result.count
     }
