@@ -13,38 +13,55 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        weatherManager.delegate = self
-        searchTextField.delegate = self
         locationManager.delegate = self //　デリゲートを先にセット
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
+        searchTextField.delegate = self
+        weatherManager.delegate = self
     }
+    
     @IBAction func searchButtonTapped(_ sender: Any) {
         searchTextField.endEditing(true)
     }
+
     @IBAction func locationButtonTapped(_ sender: Any) {
         locationManager.requestLocation()
+    }
+
+    @IBAction func styleButton1Tapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "StyleScreen1", bundle: nil)
+        guard let screen1 = storyboard.instantiateViewController(withIdentifier: "StyleScreen1") as? StyleScreen1ViewController else { return }
+        self.present(screen1, animated: true, completion: nil)
+
+    }
+
+    @IBAction func styleButton2Tapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "StyleScreen2", bundle: nil)
+        guard let screen2 = storyboard.instantiateViewController(withIdentifier: "StyleScreen2") as? StyleScreen2ViewController else { return }
+        self.present(screen2, animated: true, completion: nil)
+
     }
 
 }
 // MARK: - CLLocationManager
 extension WeatherViewController: CLLocationManagerDelegate {
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
+            locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             weatherManager.fetchLocation(latitude: lat, longitude: lon)
         }
-
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error")
+        print("位置情報の取得に失敗しました")
     }
 }
 // MARK: - TextFieldDelegate
 extension WeatherViewController: UITextFieldDelegate {
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextField.endEditing(true)
     }
@@ -63,6 +80,8 @@ extension WeatherViewController: UITextFieldDelegate {
             weatherManager.fetchCityName(cityName: city)
         }
         searchTextField.text = ""
+
+
     }
 }
 // MARK: - WeatherDelegate
@@ -74,7 +93,10 @@ extension WeatherViewController: WeatherDelegate {
             self.temperatureLabel.text = weather.temperatureString
             self.tempImage.image = UIImage(systemName: weather.conditionName)
         }
+    }
 
+    func didFailWithError(error: Error) {
+        print(error)
     }
 }
 

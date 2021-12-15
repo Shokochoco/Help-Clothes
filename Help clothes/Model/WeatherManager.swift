@@ -1,14 +1,16 @@
 import Foundation
 import UIKit
 import Alamofire
+import CoreLocation
 
-protocol WeatherDelegate {
+protocol WeatherDelegate: AnyObject {
    func didUpdateWeather(_ requests: WeatherManager,weather: WeatherModel)
+   func didFailWithError(error: Error)
 }
 
 struct WeatherManager {
 
-    var delegate: WeatherDelegate?
+    weak var delegate: WeatherDelegate?
 
     let weatherURL = "https://api.openweathermap.org/data/2.5/weather?&appid=5a252d37454b5103f6a38dd6e7d7ee37&units=metric&lang=ja"
 
@@ -17,6 +19,10 @@ struct WeatherManager {
         performRequest(with: cityURL)
     }
     //Corelocation
+    func fetchLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let cityURL = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
+        performRequest(with: cityURL)
+    }
 
     func performRequest(with weatherURL: String)  {
 
@@ -25,9 +31,8 @@ struct WeatherManager {
             guard let data = response.data else { return }
             if let safeData = self.changeForm(data) {
                 //safeDataをViewに渡して各種配置につける
-                self.delegate?.didUpdateWeather(self, weather: safeData) 
+                self.delegate?.didUpdateWeather(self, weather: safeData)
             }
-            print("Error")
         }
     }
 
