@@ -16,5 +16,6 @@ target 'Help clothes' do
     # Pods for testing
   end
    pod 'Alamofire', '~> 5.4'
+   pod 'RealmSwift'
 
 end

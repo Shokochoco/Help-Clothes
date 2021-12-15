@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import RealmSwift
 
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var leftData = ["トップス", "ボトムス", "ワンピース"]
@@ -11,11 +12,16 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
             self.photoImage.image = UIImage(named: "no-image")
         }
     }
+    // ドキュメントディレクトリの「ファイルURL」（URL型）定義
+    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    // ドキュメントディレクトリの「パス」（String型）定義
+    let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.delegate = self
         pickerView.dataSource = self
+        print("documentDirectoryFileURL\(documentDirectoryFileURL)")
     }
 
     @IBAction func selectPhotoTapped(_ sender: Any) {
@@ -36,14 +42,48 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
 
     @IBAction func registerButtonTapped(_ sender: Any) {
 
+        saveImage()
         let itemLow = pickerView.selectedRow(inComponent: 0)
         let tempLow = pickerView.selectedRow(inComponent: 1)
 
-//        realmData.itemData = leftData[itemLow]
-//        realmData.tempData = rightData[tempLow]
-//        realmData.photoData =  documentDirectoryFileURL.absoluteString
-        
+        let realm = try! Realm()
+        let realmData = RealmDataModel()
+
+        realmData.itemData = leftData[itemLow]
+        realmData.tempData = rightData[tempLow]
+        realmData.photoData =  documentDirectoryFileURL.absoluteString
+
+        do{
+            try realm.write{
+                realm.add(realmData)
+            }
+        }catch {
+            print("Error \(error)")
+        }
+
         self.dismiss(animated: true, completion: nil)
+    }
+    //保存するためのパスを作成する
+    func createLocalDataFile() {
+        // 作成するテキストファイルの名前
+        let fileName = "\(NSUUID().uuidString).png"
+        // DocumentディレクトリのfileURLを取得
+        if documentDirectoryFileURL != nil {
+            // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
+            let path = documentDirectoryFileURL.appendingPathComponent(fileName)
+            documentDirectoryFileURL = path
+        }
+    }
+    //画像を保存する関数の部分
+    func saveImage() {
+        createLocalDataFile()
+        //pngで保存する場合
+        let pngImageData = photoImage.image?.pngData()
+        do {
+            try pngImageData!.write(to: documentDirectoryFileURL)
+        } catch {
+            print("PNGエラー")
+        }
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {

@@ -13,11 +13,11 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        weatherManager.delegate = self
-        searchTextField.delegate = self
         locationManager.delegate = self //　デリゲートを先にセット
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
+        searchTextField.delegate = self
+        weatherManager.delegate = self
     }
     
     @IBAction func searchButtonTapped(_ sender: Any) {
@@ -45,22 +45,23 @@ class WeatherViewController: UIViewController {
 }
 // MARK: - CLLocationManager
 extension WeatherViewController: CLLocationManagerDelegate {
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
+            locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             weatherManager.fetchLocation(latitude: lat, longitude: lon)
         }
-
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error")
+        print("位置情報の取得に失敗しました")
     }
 }
 // MARK: - TextFieldDelegate
 extension WeatherViewController: UITextFieldDelegate {
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextField.endEditing(true)
     }
@@ -79,6 +80,8 @@ extension WeatherViewController: UITextFieldDelegate {
             weatherManager.fetchCityName(cityName: city)
         }
         searchTextField.text = ""
+
+
     }
 }
 // MARK: - WeatherDelegate
@@ -90,7 +93,10 @@ extension WeatherViewController: WeatherDelegate {
             self.temperatureLabel.text = weather.temperatureString
             self.tempImage.image = UIImage(systemName: weather.conditionName)
         }
+    }
 
+    func didFailWithError(error: Error) {
+        print(error)
     }
 }
 
