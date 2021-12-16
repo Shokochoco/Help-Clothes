@@ -25,7 +25,7 @@ class CollectionHeaderView: UICollectionReusableView {
         case 1:
             return "ボトムス"
         case 2:
-            return "ワンピース"
+            return "シューズ"
         default:
             return ""
         }

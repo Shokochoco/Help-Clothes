@@ -59,6 +59,9 @@
                                     <color key="baseForegroundColor" red="0.65028449109999997" green="0.86005365860000005" blue="0.97894138100000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="styleButton2Tapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1Xx-86-IND"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="気温" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pq1-5w-gd6">
                                 <rect key="frame" x="126" y="95" width="85" height="61"/>

@@ -5,7 +5,7 @@ import RealmSwift
 enum MainSection: Int, CaseIterable {
     case Tops
     case Bottoms
-    case Onepiece
+    case Shoes
 }
 
 class PhotoCollectionView: UIViewController {
@@ -27,7 +27,7 @@ class PhotoCollectionView: UIViewController {
             case MainSection.Bottoms.rawValue:
                 return self?.createTopsLayout() // 一旦BottomもTopsのメソッドで
 
-            case MainSection.Onepiece.rawValue:
+            case MainSection.Shoes.rawValue:
                 return self?.createTopsLayout() // 一旦BottomもTopsのメソッドで
             default:
                 fatalError()
@@ -50,6 +50,10 @@ class PhotoCollectionView: UIViewController {
         collectionView?.register(CollectionHeaderView.nib(), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        collectionView.reloadData()
+    }
+
     @IBAction func addButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Register", bundle: nil)
         let registerView = storyboard.instantiateViewController(withIdentifier: "register")
@@ -61,14 +65,31 @@ class PhotoCollectionView: UIViewController {
 // MARK: - CollectionView
 extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
 
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        3 // 注意：enumで設定したセクションの数と合わせる
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let realm = try! Realm()
         let result = realm.objects(RealmDataModel.self)
-        return result.count
-    }
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3 // enumで設定したセクションの数と合わせる
+        switch section {
+        case MainSection.Tops.rawValue:
+            let filtedResult = result.filter("itemData == 'トップス'")
+            return filtedResult.count
+
+        case MainSection.Bottoms.rawValue:
+            let filtedResult = result.filter("itemData == 'ボトムス'")
+            return filtedResult.count
+
+        case MainSection.Shoes.rawValue:
+            let filtedResult = result.filter("itemData == 'シューズ'")
+            return filtedResult.count
+
+        default:
+            fatalError("セクションに分けられない")
+        }
+
     }
     //　セルの中身
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -78,15 +99,31 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
 
         cell.setUp()
 
-        if let ImageData = UIImage(data: result[indexPath.row].photoData!) {
+        switch (indexPath.section) {
+        case MainSection.Tops.rawValue:
+            let tops = result.filter("itemData == 'トップス'")
+            let imageData = UIImage(data: tops[indexPath.row].photoData!)
+            cell.stylePhoto.image = imageData
+            cell.stylePhoto.contentMode = .scaleAspectFill
 
-            cell.stylePhoto.image = ImageData
-            cell.backgroundColor = .lightGray
-        } else {
+        case MainSection.Bottoms.rawValue:
+            let bottoms = result.filter("itemData == 'ボトムス'")
+            let imageData = UIImage(data: bottoms[indexPath.row].photoData!)
+            cell.stylePhoto.image = imageData
+            cell.stylePhoto.contentMode = .scaleAspectFill
+
+        case MainSection.Shoes.rawValue:
+            let shoes = result.filter("itemData == 'シューズ'")
+            let imageData = UIImage(data: shoes[indexPath.row].photoData!)
+            cell.stylePhoto.image = imageData
+            cell.stylePhoto.contentMode = .scaleAspectFill
+
+        default:
             cell.backgroundColor = .lightGray
         }
 
         return cell
+
     }
 
     //　ヘッダーの中身
@@ -97,7 +134,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CollectionHeaderView", for: indexPath) as? CollectionHeaderView else {
                 fatalError("Could not find proper header")
             }
-            //　なんか変↓
+            //　なんか変？
             header.titleLabel.text = header.sectionTitle(section: indexPath.section)
             return header
         }
@@ -130,6 +167,10 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         section.boundarySupplementaryItems = [sectionHeader]
 
         return section
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        <#code#>
     }
 
 }
