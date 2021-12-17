@@ -147,6 +147,13 @@
                                     <action selector="addButtonTapped:" destination="ghq-MX-Z03" eventType="touchUpInside" id="HUi-is-h2D"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="アイテム数" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0mX-6z-ah0">
+                                <rect key="frame" x="242" y="50" width="132" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zhn-WX-SL9"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -158,12 +165,24 @@
                     <tabBarItem key="tabBarItem" title="Item" id="9T5-CQ-k5W"/>
                     <connections>
                         <outlet property="collectionView" destination="Ldk-8C-JYl" id="luV-Nt-P2P"/>
+                        <outlet property="itemNumber" destination="0mX-6z-ah0" id="EPb-mH-cfD"/>
                         <outlet property="registerButton" destination="WYm-bS-rL9" id="NBN-8U-2z8"/>
+                        <segue destination="sZV-zr-NcB" kind="show" identifier="segue" id="mRD-03-Csd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nzH-6s-eJw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="524.63768115942037" y="782.8125"/>
+        </scene>
+        <!--Register-->
+        <scene sceneID="LGI-mA-p8t">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Register" id="sZV-zr-NcB" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="HhA-m3-Utg"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="naY-Zy-9c3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1186" y="783"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="7kB-7E-hwe">

@@ -12,15 +12,25 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
             self.photoImage.image = UIImage(named: "no-image")
         }
     }
+
+    var photoData: Data?
     // ドキュメントディレクトリの「ファイルURL」（URL型）定義
-    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+//    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     // ドキュメントディレクトリの「パス」（String型）定義
-    let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//    let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.delegate = self
         pickerView.dataSource = self
+        configureView()
+    }
+
+    func configureView() {
+        // セルがタップされてきた場合、その情報をセット
+        if let photoData = photoData {
+            self.photoImage.image = UIImage(data: photoData)
+        }
     }
 
     @IBAction func selectPhotoTapped(_ sender: Any) {
