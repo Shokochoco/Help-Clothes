@@ -13,6 +13,10 @@ class PhotoCollectionView: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var itemNumber: UILabel!
+    // 受け渡し用
+    var tempPickerNum: Int?
+    var itemPickerNum: Int?
+    var tempData: String?
     var photoData: Data?
     
     // データの差分更新（表示状態を管理）
@@ -189,16 +193,39 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         switch (indexPath.section) {
         case MainSection.Tops.rawValue:
             let tops = results.filter("itemData == 'トップス'")
+            tempData = tops[indexPath.row].tempData
+            itemPickerNum = 0
             photoData = tops[indexPath.row].photoData
 
         case MainSection.Bottoms.rawValue:
             let bottoms = results.filter("itemData == 'ボトムス'")
+            tempData = bottoms[indexPath.row].tempData
+            itemPickerNum = 1
             photoData = bottoms[indexPath.row].photoData
+
         case MainSection.Shoes.rawValue:
             let shoes = results.filter("itemData == 'シューズ'")
+            tempData = shoes[indexPath.row].tempData
+            itemPickerNum = 2
             photoData = shoes[indexPath.row].photoData
+
         default :
             print("error")
+        }
+
+        switch tempData {
+        case "暑い日用":
+            tempPickerNum = 0
+        case "暖かい日用":
+            tempPickerNum = 1
+        case "涼しい日用":
+            tempPickerNum = 2
+        case "寒い日用":
+            tempPickerNum = 3
+        case "いつでも":
+            tempPickerNum = 4
+        default:
+            print("filterできない")
         }
 
         performSegue(withIdentifier: "segue", sender: nil)
@@ -208,24 +235,12 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         guard let destinationViewController = segue.destination as? RegisterViewController else { return }
-        destinationViewController.photoData = photoData // とれてる
-        // タップして遷移する場合
+        // タップして遷移する場合（これ書かなくていい？）
         if let indexPath = collectionView.indexPathsForSelectedItems, segue.identifier == "segue" {
-
-        // こっちの画面のcellに入ってる一意の情報を変数に入れ
-//       // データと一致するものをRealmからフェッチする
-//            let fetcherequest = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@",
-//                                            itemData, tempsData, photoData as! CVarArg)
-//       // フェッチした情報を次の画面の受け皿に渡す
-
-
+            destinationViewController.itemPickerNum = itemPickerNum
+            destinationViewController.tempPickerNum = tempPickerNum
+            destinationViewController.photoData = photoData
         }
-
-
-
-
-
-
     }
 
     // セルの移動制限

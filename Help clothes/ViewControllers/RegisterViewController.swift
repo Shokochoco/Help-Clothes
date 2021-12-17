@@ -12,7 +12,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
             self.photoImage.image = UIImage(named: "no-image")
         }
     }
-
+    var itemPickerNum: Int?
+    var tempPickerNum: Int?
     var photoData: Data?
     // ドキュメントディレクトリの「ファイルURL」（URL型）定義
 //    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -27,8 +28,18 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     }
 
     func configureView() {
+        let realm = try! Realm()
+        let results = realm.objects(RealmDataModel.self)
         // セルがタップされてきた場合、その情報をセット
-        if let photoData = photoData {
+        if let itemPickerNum = itemPickerNum,
+           let tempPickerNum = tempPickerNum,
+           let photoData = photoData {
+            let fetcherequest = NSPredicate(format: "photoData == %@", photoData as CVarArg)
+            let tempData = results.filter(fetcherequest)
+            print(tempData) // 同じphoto3つ出てきちゃう
+            pickerView.selectRow(itemPickerNum, inComponent: 0, animated: false)
+            pickerView.selectRow(tempPickerNum, inComponent: 1, animated: false)
+
             self.photoImage.image = UIImage(data: photoData)
         }
     }
@@ -51,6 +62,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     }
 
     @IBAction func registerButtonTapped(_ sender: Any) {
+
+        if photoData != nil {
+
+        }
         
         let itemLow = pickerView.selectedRow(inComponent: 0)
         let tempLow = pickerView.selectedRow(inComponent: 1)
@@ -112,7 +127,7 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return 0
         }
     }
-
+    // 表示する配列
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
