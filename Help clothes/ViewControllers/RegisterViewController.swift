@@ -7,6 +7,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     var rightData = ["暑い日用", "暖かい日用","涼しい日用","寒い日用", "いつでも"]
 
     @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var photoImage: UIImageView! {
         didSet {
             self.photoImage.image = UIImage(named: "no-image")
@@ -16,9 +17,9 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     var tempPickerNum: Int?
     var photoData: Data?
     // ドキュメントディレクトリの「ファイルURL」（URL型）定義
-//    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    //    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     // ドキュメントディレクトリの「パス」（String型）定義
-//    let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    //    let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,20 +29,32 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     }
 
     func configureView() {
-        let realm = try! Realm()
-        let results = realm.objects(RealmDataModel.self)
         // セルがタップされてきた場合、その情報をセット
         if let itemPickerNum = itemPickerNum,
            let tempPickerNum = tempPickerNum,
            let photoData = photoData {
-            let fetcherequest = NSPredicate(format: "photoData == %@", photoData as CVarArg)
-            let tempData = results.filter(fetcherequest)
-            print(tempData) // 同じphoto3つ出てきちゃう
             pickerView.selectRow(itemPickerNum, inComponent: 0, animated: false)
             pickerView.selectRow(tempPickerNum, inComponent: 1, animated: false)
-
             self.photoImage.image = UIImage(data: photoData)
+        } else {
+            deleteButton.isHidden = true
         }
+    }
+
+    @IBAction func deletePhotoTapped(_ sender: Any) {
+        showAlert(title: "写真を削除しますか？", message: "")
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default) { _ in
+            self.photoImage.image = UIImage(named: "no-image")}
+
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+
+        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func selectPhotoTapped(_ sender: Any) {
@@ -63,51 +76,86 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
 
     @IBAction func registerButtonTapped(_ sender: Any) {
 
-        if photoData != nil {
-
-        }
-        
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        // 新しい値
         let itemLow = pickerView.selectedRow(inComponent: 0)
         let tempLow = pickerView.selectedRow(inComponent: 1)
         let pngUIImage = photoImage?.image?.pngData()
+        // 画像のnilチェック
+        if photoImage.image == UIImage(named: "no-image") {
+            alert(title: "画像を選択してください", message: "")
+        } else {
+            // 新規登録 realm用オブジェクト作る
+            if itemPickerNum == nil,
+               tempPickerNum == nil,
+               photoData == nil {
 
-        let realm = try! Realm()
-        let realmData = RealmDataModel()
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
+                let realmData = RealmDataModel()
 
-        realmData.itemData = leftData[itemLow]
-        realmData.tempData = rightData[tempLow]
-        realmData.photoData = pngUIImage
+                realmData.itemData = leftData[itemLow]
+                realmData.tempData = rightData[tempLow]
+                realmData.photoData = pngUIImage
 
-        do{
-            try realm.write{
-                realm.add(realmData)
+                let realm = try! Realm()
+
+                do{
+                    try realm.write{
+                        //　新規
+                        realm.add(realmData)
+                    }
+                }catch {
+                    print("新規登録 \(error)")
+
+                }
+            } else {
+                let realm = try! Realm()
+
+                do{
+                    try realm.write{
+                        //　更新はこの中で
+                        let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
+                        let result = realm.objects(RealmDataModel.self).filter(predicate)
+
+                        result.first?.itemData = leftData[itemLow]
+                        result.first?.tempData = rightData[tempLow]
+                        result.first?.photoData = pngUIImage
+                    }
+                }catch {
+                    print("更新\(error)")
+
+                }
+
             }
-        }catch {
-            print("Error \(error)")
+            self.dismiss(animated: true, completion: nil)
         }
 
-        self.dismiss(animated: true, completion: nil)
     }
 
+    func alert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okButton)
+        present(alert, animated: true, completion: nil)
+    }
+
+    @IBAction func deleteItemButtonTapped(_ sender: Any) {
+        let realm = try! Realm()
+
+        let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
+        let result = realm.objects(RealmDataModel.self).filter(predicate)
+
+        do{
+          try realm.write{
+              realm.delete(result)
+          }
+        }catch {
+          print("削除 \(error)")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func closeButtonTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    @IBAction func deletePhotoTapped(_ sender: Any) {
-        showAlert()
-    }
-
-    private func showAlert() {
-        let alert = UIAlertController(title: "写真を削除しますか？", message: "", preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "OK", style: .default) { _ in
-            self.photoImage.image = UIImage(named: "no-image")}
-
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(okButton)
-        alert.addAction(cancelButton)
-
-        present(alert, animated: true, completion: nil)
     }
 }
 

@@ -235,7 +235,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         guard let destinationViewController = segue.destination as? RegisterViewController else { return }
-        // タップして遷移する場合（これ書かなくていい？）
+        // タップして遷移する場合（このif書かなくていい？）
         if let indexPath = collectionView.indexPathsForSelectedItems, segue.identifier == "segue" {
             destinationViewController.itemPickerNum = itemPickerNum
             destinationViewController.tempPickerNum = tempPickerNum
