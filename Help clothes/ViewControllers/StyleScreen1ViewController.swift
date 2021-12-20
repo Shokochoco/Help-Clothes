@@ -11,10 +11,17 @@ class StyleScreen1ViewController: UIViewController {
     }
 
     var weatherData: String?
+    var weatherMessage: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         selectImageFromRealm()
+        selectMessage()
+
+    }
+
+    func selectMessage() {
+        messageLabel.text = weatherMessage
     }
 
     func selectImageFromRealm() {
@@ -24,9 +31,10 @@ class StyleScreen1ViewController: UIViewController {
         let realm = try! Realm()
         let predicate = NSPredicate(format: "tempData == %@", weatherData!)
         let result = realm.objects(RealmDataModel.self).filter(predicate)
-        //  取得した写真データをランダムでimagePhotoに入れる
+        //  気温で取得したデータからランダムでimagePhotoに入れる
         if let randomResult = result.randomElement() {
             self.imagePhoto.image = UIImage(data: randomResult.photoData!)
+            imagePhoto.contentMode = .scaleAspectFill
         }
         }
     }

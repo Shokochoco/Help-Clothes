@@ -10,20 +10,18 @@ struct WeatherModel {
     }
 
     var weatherTemp: String {
-    switch temperature {
-    case -10.0 ..< 10.0:
-        return "寒い日用"
-    case 10.0...14.0:
-        return "寒い日用"
-    case 15.0...19.0:
-        return "涼しい日用"
-    case 20.0...24.0:
-        return "暖かい日用"
-    case 25.0...40.0:
-        return "暑い日用"
-    default:
-        return "いつでも"
-    }
+        switch temperature {
+        case -10.0 ..< 13.0:
+            return "寒い日用"
+        case 13.0 ..< 20.0:
+            return "涼しい日用"
+        case 20.0 ..< 25.0:
+            return "暖かい日用"
+        case 25.0...40.0:
+            return "暑い日用"
+        default:
+            return "いつでも"
+        }
     }
 
     var conditionName: String {
@@ -48,6 +46,23 @@ struct WeatherModel {
             return "cloud"
         default:
             return "cloud"
+        }
+    }
+
+    var conditionMessage: String {
+        switch conditionId {
+        case 531:
+            return "雨が降るかも☂️傘を忘れずに！"
+        case 600...622:
+            return "雪が降るかも❄️あったかい格好で出かけよう"
+        case 701...781:
+            return "霧が多いかも☁️気をつけて〜"
+        case 800:
+            return "晴れだね🌞良い１日を！"
+        case 801...804:
+            return "曇りが多いかも☁️良い１日を！"
+        default:
+            return "曇りが多いかも☁️良い１日を！"
         }
     }
 }

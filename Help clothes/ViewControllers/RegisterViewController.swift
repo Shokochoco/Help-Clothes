@@ -140,20 +140,29 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
 
     @IBAction func deleteItemButtonTapped(_ sender: Any) {
 
-        
         let realm = try! Realm()
-
         let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
         let result = realm.objects(RealmDataModel.self).filter(predicate)
 
-        do{
-          try realm.write{
-              realm.delete(result)
-          }
-        }catch {
-          print("削除 \(error)")
+        let alert = UIAlertController(title: "本当に削除しますか？", message: "一度削除すると戻せません", preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "はい", style: .default) { [weak self] _ in
+            // 削除処理
+            do{
+                try realm.write{
+                    realm.delete(result)
+                }
+            }catch {
+                print("削除 \(error)")
+            }
+            self?.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)
+
+        let cancelButton = UIAlertAction(title: "戻る", style: .cancel, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+
+        present(alert, animated: true, completion: nil)
+
     }
     
     @IBAction func closeButtonTapped(_ sender: Any) {

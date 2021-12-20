@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,21 +13,57 @@
             <objects>
                 <viewController storyboardIdentifier="StyleScreen2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="StyleScreen2ViewController" customModule="Help_clothes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Human" translatesAutoresizingMaskIntoConstraints="NO" id="DnJ-zY-S9S">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Human" translatesAutoresizingMaskIntoConstraints="NO" id="DnJ-zY-S9S">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RiN-TC-Mvg">
+                                <rect key="frame" x="119.5" y="108" width="136" height="172"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="172" id="f1g-TM-js6"/>
+                                    <constraint firstAttribute="width" constant="136" id="sH3-lm-83v"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Om-OD-mNt">
+                                <rect key="frame" x="119.5" y="288" width="136" height="172"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="172" id="7Ka-Cj-Jpv"/>
+                                    <constraint firstAttribute="width" constant="136" id="D4v-04-sbJ"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hu3-MG-DV8">
+                                <rect key="frame" x="119.5" y="468" width="136" height="172"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="172" id="OcG-Sk-8eZ"/>
+                                    <constraint firstAttribute="width" constant="136" id="rDw-vy-TM1"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="DnJ-zY-S9S" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="5oD-2F-bgk"/>
+                            <constraint firstItem="0Om-OD-mNt" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="6xg-Hi-68I"/>
+                            <constraint firstItem="hu3-MG-DV8" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="8jJ-Pr-1iO"/>
+                            <constraint firstItem="RiN-TC-Mvg" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="GHO-Rs-iN2"/>
+                            <constraint firstItem="hu3-MG-DV8" firstAttribute="top" secondItem="0Om-OD-mNt" secondAttribute="bottom" constant="8" id="N7r-PX-UQ5"/>
+                            <constraint firstItem="DnJ-zY-S9S" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="SDP-Oc-58w"/>
+                            <constraint firstItem="DnJ-zY-S9S" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="Xg4-ku-XqY"/>
+                            <constraint firstItem="0Om-OD-mNt" firstAttribute="top" secondItem="RiN-TC-Mvg" secondAttribute="bottom" constant="8" id="ajW-DH-0II"/>
+                            <constraint firstItem="RiN-TC-Mvg" firstAttribute="top" secondItem="DnJ-zY-S9S" secondAttribute="bottom" constant="8" id="mld-N9-b63"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="bottomsImage" destination="0Om-OD-mNt" id="5XR-OB-AYi"/>
+                        <outlet property="shoesImage" destination="hu3-MG-DV8" id="dhU-Iq-Wp7"/>
+                        <outlet property="topsImage" destination="RiN-TC-Mvg" id="JHK-jL-XtC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="72" y="59"/>
+            <point key="canvasLocation" x="69.599999999999994" y="58.920539730134934"/>
         </scene>
     </scenes>
     <resources>

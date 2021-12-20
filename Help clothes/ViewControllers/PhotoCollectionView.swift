@@ -150,7 +150,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CollectionHeaderView", for: indexPath) as? CollectionHeaderView else {
                 fatalError("Could not find proper header")
             }
-            //　なんか変？
+            //　なんか変かも？
             header.titleLabel.text = header.sectionTitle(section: indexPath.section)
             return header
         }
