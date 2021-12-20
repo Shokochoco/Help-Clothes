@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B824AD048322B9DACAF5693 /* Pods_Help_clothesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98EB2C556E3AE1AF9F8A521C /* Pods_Help_clothesTests.framework */; };
 		8C3CD05223BAA5523498BAC5 /* Pods_Help_clothes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898778F40E8D77161E23FB48 /* Pods_Help_clothes.framework */; };
+		D80CB1F027706CF000B96848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D80CB1EF27706CF000B96848 /* Assets.xcassets */; };
 		D88856C0274F797B0038FCEA /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88856BF274F797B0038FCEA /* WeatherModel.swift */; };
 		D88856C6274F93DE0038FCEA /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88856C5274F93DE0038FCEA /* WeatherData.swift */; };
 		D88F6D77276667EA00F76D18 /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88F6D76276667EA00F76D18 /* RealmDataModel.swift */; };
@@ -28,7 +29,6 @@
 		D8ACFEB52748D65900846103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFEB42748D65900846103 /* AppDelegate.swift */; };
 		D8ACFEB72748D65900846103 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFEB62748D65900846103 /* SceneDelegate.swift */; };
 		D8ACFEBC2748D65900846103 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8ACFEBA2748D65900846103 /* Main.storyboard */; };
-		D8ACFEBE2748D65E00846103 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8ACFEBD2748D65E00846103 /* Assets.xcassets */; };
 		D8ACFEC12748D65E00846103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8ACFEBF2748D65E00846103 /* LaunchScreen.storyboard */; };
 		D8ACFECC2748D65E00846103 /* Help_clothesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFECB2748D65E00846103 /* Help_clothesTests.swift */; };
 		D8ACFED62748D65E00846103 /* Help_clothesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFED52748D65E00846103 /* Help_clothesUITests.swift */; };
@@ -62,6 +62,7 @@
 		98EB2C556E3AE1AF9F8A521C /* Pods_Help_clothesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Help_clothesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1D02A70CC03CC69F6C47A29 /* Pods-Help clothes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Help clothes.release.xcconfig"; path = "Target Support Files/Pods-Help clothes/Pods-Help clothes.release.xcconfig"; sourceTree = "<group>"; };
 		BD80E9C3F1361C5BF5D4F666 /* Pods-Help clothes-Help clothesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Help clothes-Help clothesUITests.release.xcconfig"; path = "Target Support Files/Pods-Help clothes-Help clothesUITests/Pods-Help clothes-Help clothesUITests.release.xcconfig"; sourceTree = "<group>"; };
+		D80CB1EF27706CF000B96848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D88856BF274F797B0038FCEA /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		D88856C5274F93DE0038FCEA /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		D88F6D76276667EA00F76D18 /* RealmDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataModel.swift; sourceTree = "<group>"; };
@@ -82,7 +83,6 @@
 		D8ACFEB42748D65900846103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8ACFEB62748D65900846103 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D8ACFEBB2748D65900846103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D8ACFEBD2748D65E00846103 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8ACFEC02748D65E00846103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D8ACFEC22748D65E00846103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8ACFEC72748D65E00846103 /* Help clothesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Help clothesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,10 +134,10 @@
 		D88856C1274F7B100038FCEA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D88856BF274F797B0038FCEA /* WeatherModel.swift */,
+				D88F6D76276667EA00F76D18 /* RealmDataModel.swift */,
 				D89D17DE27660FFD00A713B9 /* WeatherManager.swift */,
 				D88856C5274F93DE0038FCEA /* WeatherData.swift */,
-				D88F6D76276667EA00F76D18 /* RealmDataModel.swift */,
+				D88856BF274F797B0038FCEA /* WeatherModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -215,9 +215,9 @@
 				D88856C1274F7B100038FCEA /* Model */,
 				D89D17C727660E5800A713B9 /* ViewControllers */,
 				D88856C2274F7B1F0038FCEA /* View */,
-				D8ACFEBD2748D65E00846103 /* Assets.xcassets */,
 				D8ACFEBF2748D65E00846103 /* LaunchScreen.storyboard */,
 				D8ACFEC22748D65E00846103 /* Info.plist */,
+				D80CB1EF27706CF000B96848 /* Assets.xcassets */,
 			);
 			path = "Help clothes";
 			sourceTree = "<group>";
@@ -365,9 +365,9 @@
 				D89983312768F32E007F120D /* CollectionHeaderView.xib in Resources */,
 				D8ACFEC12748D65E00846103 /* LaunchScreen.storyboard in Resources */,
 				D89D17DD27660F5F00A713B9 /* Register.storyboard in Resources */,
-				D8ACFEBE2748D65E00846103 /* Assets.xcassets in Resources */,
 				D8ACFEBC2748D65900846103 /* Main.storyboard in Resources */,
 				D89D17DB27660F5F00A713B9 /* CollectionViewCell.xib in Resources */,
+				D80CB1F027706CF000B96848 /* Assets.xcassets in Resources */,
 				D89D17DC27660F5F00A713B9 /* StyleScreen2.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

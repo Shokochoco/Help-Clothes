@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 import CoreLocation
 
 class WeatherViewController: UIViewController {
@@ -10,6 +9,7 @@ class WeatherViewController: UIViewController {
 
     var weatherManager = WeatherManager()
     let locationManager = CLLocationManager()
+    var weatherTempData: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +31,15 @@ class WeatherViewController: UIViewController {
     @IBAction func styleButton1Tapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "StyleScreen1", bundle: nil)
         guard let screen1 = storyboard.instantiateViewController(withIdentifier: "StyleScreen1") as? StyleScreen1ViewController else { return }
-        self.present(screen1, animated: true, completion: nil)
+        screen1.weatherData = weatherTempData
 
+        self.present(screen1, animated: true, completion: nil)
     }
 
     @IBAction func styleButton2Tapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "StyleScreen2", bundle: nil)
         guard let screen2 = storyboard.instantiateViewController(withIdentifier: "StyleScreen2") as? StyleScreen2ViewController else { return }
+        screen2.weatherData = weatherTempData
         self.present(screen2, animated: true, completion: nil)
 
     }
@@ -87,6 +89,7 @@ extension WeatherViewController: UITextFieldDelegate {
 // MARK: - WeatherDelegate
 extension WeatherViewController: WeatherDelegate {
     func didUpdateWeather(_ requests: WeatherManager, weather: WeatherModel) { //このdelegateを引き起こすオブジェクトをparamerterに指定する
+        weatherTempData = weather.weatherTemp
         //各種配置につける
         DispatchQueue.main.async {
             self.cityLabel.text = weather.cityName

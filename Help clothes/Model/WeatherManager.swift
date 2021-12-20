@@ -18,7 +18,7 @@ struct WeatherManager {
         let cityURL = "\(weatherURL)&q=\(cityName)"
         performRequest(with: cityURL)
     }
-    //Corelocation
+    
     func fetchLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let cityURL = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
         performRequest(with: cityURL)
@@ -32,6 +32,7 @@ struct WeatherManager {
             if let safeData = self.changeForm(data) {
                 //safeDataをViewに渡して各種配置につける
                 self.delegate?.didUpdateWeather(self, weather: safeData)
+//                self.selectPhotoDelegate?.selectImageFromRealm(self, weather: safeData) // 入ってる
             }
         }
     }

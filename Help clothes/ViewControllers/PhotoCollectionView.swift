@@ -189,7 +189,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
 
         let realm = try! Realm()
         let results = realm.objects(RealmDataModel.self)
-
+        // データを次の画面に渡す
         switch (indexPath.section) {
         case MainSection.Tops.rawValue:
             let tops = results.filter("itemData == 'トップス'")
@@ -240,6 +240,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             destinationViewController.itemPickerNum = itemPickerNum
             destinationViewController.tempPickerNum = tempPickerNum
             destinationViewController.photoData = photoData
+            destinationViewController.modalPresentationStyle = .fullScreen
         }
     }
 

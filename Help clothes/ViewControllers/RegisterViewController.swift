@@ -80,7 +80,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
         // 新しい値
         let itemLow = pickerView.selectedRow(inComponent: 0)
         let tempLow = pickerView.selectedRow(inComponent: 1)
-        let pngUIImage = photoImage?.image?.pngData()
+        let newPhotoData = photoImage?.image?.pngData()
         // 画像のnilチェック
         if photoImage.image == UIImage(named: "no-image") {
             alert(title: "画像を選択してください", message: "")
@@ -94,7 +94,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
 
                 realmData.itemData = leftData[itemLow]
                 realmData.tempData = rightData[tempLow]
-                realmData.photoData = pngUIImage
+                realmData.photoData = newPhotoData
 
                 let realm = try! Realm()
 
@@ -118,7 +118,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
 
                         result.first?.itemData = leftData[itemLow]
                         result.first?.tempData = rightData[tempLow]
-                        result.first?.photoData = pngUIImage
+                        result.first?.photoData = newPhotoData
                     }
                 }catch {
                     print("更新\(error)")
@@ -139,6 +139,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     }
 
     @IBAction func deleteItemButtonTapped(_ sender: Any) {
+
+        
         let realm = try! Realm()
 
         let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
