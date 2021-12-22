@@ -12,7 +12,7 @@ struct WeatherManager {
 
     weak var delegate: WeatherDelegate?
 
-    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?&appid=5a252d37454b5103f6a38dd6e7d7ee37&units=metric&lang=ja"
+    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?&appid=5a252d37454b5103f6a38dd6e7d7ee37&units=metric"
 
     func fetchCityName(cityName: String) {
         let cityURL = "\(weatherURL)&q=\(cityName)"

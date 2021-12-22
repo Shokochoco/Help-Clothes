@@ -51,8 +51,10 @@ struct WeatherModel {
 
     var conditionMessage: String {
         switch conditionId {
-        case 531:
+        case 200...232:
             return "雨が降るかも☂️傘を忘れずに！"
+        case 500...531:
+            return "雨に気をつけて☂️傘を忘れずに！"
         case 600...622:
             return "雪が降るかも❄️あったかい格好で出かけよう"
         case 701...781:

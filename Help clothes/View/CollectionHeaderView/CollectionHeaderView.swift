@@ -10,7 +10,7 @@ import UIKit
 class CollectionHeaderView: UICollectionReusableView {
 
     @IBOutlet weak var titleLabel: UILabel!
-
+    // 自分のidentifierを設定する
     static let identifier: String = "CollectionHeaderView"
 
     static func nib() -> UINib {
@@ -21,13 +21,15 @@ class CollectionHeaderView: UICollectionReusableView {
 
         switch section {
         case 0:
-            return "トップス"
+            return "Tops"
         case 1:
-            return "ボトムス"
+            return "Bottoms"
         case 2:
-            return "シューズ"
+            return "Shoes"
         default:
             return ""
         }
     }
-    }
+
+    
+}

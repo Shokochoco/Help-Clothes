@@ -2,10 +2,12 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class RegisterViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var leftData = ["トップス", "ボトムス", "シューズ"]
     var rightData = ["暑い日用", "暖かい日用","涼しい日用","寒い日用", "いつでも"]
 
+    @IBOutlet weak var choosePhotoButton: UIButton!
+    @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var photoImage: UIImageView! {
@@ -25,7 +27,18 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
         super.viewDidLoad()
         pickerView.delegate = self
         pickerView.dataSource = self
+        layoutSetup()
         configureView()
+    }
+
+    func layoutSetup() {
+        registerButton.layer.cornerRadius = 25
+        registerButton.backgroundColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
+        deleteButton.layer.borderWidth = 3
+        deleteButton.layer.borderColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0).cgColor
+        deleteButton.tintColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
+        deleteButton.layer.cornerRadius = 25
+        choosePhotoButton.tintColor = .lightGray
     }
 
     func configureView() {
@@ -58,6 +71,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
     }
 
     @IBAction func selectPhotoTapped(_ sender: Any) {
+
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
 
             let imagePickerView = UIImagePickerController()
@@ -65,6 +79,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate 
             imagePickerView.delegate = self
             self.present(imagePickerView, animated: true)
         }
+
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

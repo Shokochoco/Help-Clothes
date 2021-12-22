@@ -3,9 +3,21 @@ import RealmSwift
 
 class StyleScreen2ViewController: UIViewController {
 
-    @IBOutlet weak var topsImage: UIImageView!
-    @IBOutlet weak var bottomsImage: UIImageView!
-    @IBOutlet weak var shoesImage: UIImageView!
+    @IBOutlet weak var topsImage: UIImageView! {
+    didSet {
+        self.topsImage.image = UIImage(named: "cant-find")
+    }
+    }
+    @IBOutlet weak var bottomsImage: UIImageView! {
+        didSet {
+            self.bottomsImage.image = UIImage(named: "cant-find")
+        }
+    }
+    @IBOutlet weak var shoesImage: UIImageView! {
+        didSet {
+            self.shoesImage.image = UIImage(named: "cant-find")
+        }
+    }
     
     var tempName: String?
     var weatherMessage: String?
@@ -13,6 +25,7 @@ class StyleScreen2ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         select3ImageFromRealm()
+        view.backgroundColor = UIColor(red: 225/255, green: 240/255, blue: 249/255, alpha: 1.0)
     }
     
     func select3ImageFromRealm() {

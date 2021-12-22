@@ -45,8 +45,7 @@ class PhotoCollectionView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        registerButton.layer.cornerRadius = 32
+        layoutSetup()
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = compositionalLayout
@@ -58,6 +57,13 @@ class PhotoCollectionView: UIViewController {
 
     }
 
+    func layoutSetup() {
+        registerButton.layer.cornerRadius = 32
+        registerButton.backgroundColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
+        collectionView.backgroundColor = UIColor(red: 225/255, green: 240/255, blue: 249/255, alpha: 1.0)
+        view.backgroundColor = UIColor(red: 225/255, green: 240/255, blue: 249/255, alpha: 1.0)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         collectionView.reloadData()
         itemNumberCount()
@@ -66,7 +72,8 @@ class PhotoCollectionView: UIViewController {
     func itemNumberCount() {
         let realm = try! Realm()
         let results = realm.objects(RealmDataModel.self)
-        itemNumber.text = String("アイテム数\(results.count)個")
+        itemNumber.text = String("Item  \(results.count)")
+        itemNumber.textColor = .lightGray
     }
 
     @IBAction func addButtonTapped(_ sender: Any) {
@@ -152,6 +159,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             }
             //　なんか変かも？
             header.titleLabel.text = header.sectionTitle(section: indexPath.section)
+            header.titleLabel.textColor = .lightGray
             return header
         }
 
@@ -243,16 +251,5 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             destinationViewController.modalPresentationStyle = .fullScreen
         }
     }
-
-    // セルの移動制限
-//    func collectionView(_ collectionView: UICollectionView, targetIndexPathForMoveFromItemAt originalIndexPath: IndexPath, toProposedIndexPath proposedIndexPath: IndexPath) -> IndexPath {
-//      //移動元と移動先のセクション番号が異なる場合
-//      if originalIndexPath.section != proposedIndexPath.section {
-//        return originalIndexPath
-//      } else {
-//          //セクション番号が一致する場合
-//          return proposedIndexPath
-//        }
-//    }
 
 }

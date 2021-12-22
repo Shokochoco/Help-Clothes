@@ -6,7 +6,9 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var tempImage: UIImageView!
-
+    @IBOutlet weak var style1Button: UIButton!
+    @IBOutlet weak var style2Button: UIButton!
+    
     var weatherManager = WeatherManager()
     let locationManager = CLLocationManager()
     var weatherTempData: String? // 気温の変数
@@ -15,13 +17,55 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        layoutSetup()
+        pushNotification()
         locationManager.delegate = self //　デリゲートを先にセット
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
         searchTextField.delegate = self
         weatherManager.delegate = self
     }
-    
+
+    func layoutSetup() {
+        addBackground(name: "background")
+        cityLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+        style1Button.backgroundColor = .clear
+        style1Button.layer.borderWidth = 3
+        style1Button.layer.borderColor = UIColor.white.cgColor
+        style1Button.layer.cornerRadius = 30
+        style1Button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+
+        style2Button.backgroundColor = .clear
+        style2Button.layer.borderWidth = 3
+        style2Button.layer.borderColor = UIColor.white.cgColor
+        style2Button.layer.cornerRadius = 30
+        style2Button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+
+    }
+
+    func addBackground(name: String) {
+            // スクリーンサイズの取得
+            let width = UIScreen.main.bounds.size.width
+            let height = UIScreen.main.bounds.size.height
+
+            // スクリーンサイズにあわせてimageViewの配置
+            let imageViewBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+            //imageViewに背景画像を表示
+            imageViewBackground.image = UIImage(named: name)
+
+            // 画像の表示モードを変更。
+            imageViewBackground.contentMode = UIView.ContentMode.scaleAspectFill
+
+            // subviewをメインビューに追加
+            view.addSubview(imageViewBackground)
+            // 加えたsubviewを、最背面に設置する
+            view.sendSubviewToBack(imageViewBackground)
+        }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            view.endEditing(true)
+        }
+
     @IBAction func searchButtonTapped(_ sender: Any) {
         searchTextField.endEditing(true)
     }
@@ -63,6 +107,21 @@ class WeatherViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    // MARK: - Push Notification
+
+    func pushNotification() {
+        // contents決める
+        let content: UNMutableNotificationContent = UNMutableNotificationContent()
+        content.title = "今日の服装決まった🌞☂️☁️？"
+        content.sound = UNNotificationSound.default
+        // Trigger決める
+        let date = DateComponents(hour:7, minute:30)
+        let trigger = UNCalendarNotificationTrigger.init(dateMatching: date, repeats: true)
+        // リクエストをセットしてaddする
+        let request: UNNotificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+
 }
 // MARK: - CLLocationManager
 extension WeatherViewController: CLLocationManagerDelegate {
@@ -91,7 +150,7 @@ extension WeatherViewController: UITextFieldDelegate {
         if textField.text != "" {
             return true
         } else {
-            textField.placeholder = "都市名を入力"
+            textField.placeholder = "In English without any space"
             return false
         }
     }
@@ -113,7 +172,7 @@ extension WeatherViewController: WeatherDelegate {
 
         DispatchQueue.main.async {
             self.cityLabel.text = weather.cityName
-            self.temperatureLabel.text = weather.temperatureString
+            self.temperatureLabel.text = "\(weather.temperatureString)℃"
             self.tempImage.image = UIImage(systemName: weather.conditionName)
         }
     }

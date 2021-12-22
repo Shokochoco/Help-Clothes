@@ -17,7 +17,7 @@ class StyleScreen1ViewController: UIViewController {
         super.viewDidLoad()
         selectImageFromRealm()
         selectMessage()
-
+        view.backgroundColor = UIColor(red: 225/255, green: 240/255, blue: 249/255, alpha: 1.0)
     }
 
     func selectMessage() {
