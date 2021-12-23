@@ -1,8 +1,10 @@
 import Foundation
 import UIKit
 import RealmSwift
+import PhotosUI
 
-class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
+
     var leftData = ["トップス", "ボトムス", "シューズ"]
     var rightData = ["暑い日用", "暖かい日用","涼しい日用","寒い日用", "いつでも"]
 
@@ -72,22 +74,112 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
 
     @IBAction func selectPhotoTapped(_ sender: Any) {
 
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+        if #available(iOS 14, *) {
+            // カメラロール設定
+            var configuration = PHPickerConfiguration()
+            configuration.selectionLimit = 1 // 選択数
+            configuration.filter = .images
+            configuration.preferredAssetRepresentationMode = .current
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            // 許可状態を確認（追加のみする場合）
+            let addOnlyAuth = PHPhotoLibrary.authorizationStatus(for: .addOnly)
 
-            let imagePickerView = UIImagePickerController()
-            imagePickerView.sourceType = .photoLibrary
-            imagePickerView.delegate = self
-            self.present(imagePickerView, animated: true)
+            switch addOnlyAuth {
+            case .notDetermined:
+                // アクセス許可をリクエスト
+                PHPhotoLibrary.requestAuthorization(for: .addOnly) {status in
+                    switch status {
+                        // カメラロール表示
+                    case .authorized:
+                        DispatchQueue.main.async { // UIの更新
+                            self.present(picker, animated: true, completion: nil)
+                        }
+                        // カメラへのアクセスを拒否
+                    default:
+                        print("denied")
+                    }
+                }
+            case .restricted:
+                print("restricted")
+                let alert = UIAlertController(title: "写真にアクセスできません", message: "", preferredStyle: .alert)
+                let close: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(close)
+                self.present(alert, animated: true, completion: nil)
+            case .denied:
+                print("denied")
+                let alert = UIAlertController(title: "写真にアクセスできません", message: "設定からアクセス許可をしてください", preferredStyle: .alert)
+                let settings = UIAlertAction(title: "設定", style: .default, handler: { (_) -> Void in
+                    let settingsURL = URL(string: UIApplication.openSettingsURLString)
+                    UIApplication.shared.open(settingsURL!, options: [:], completionHandler: nil)
+                })
+                let close: UIAlertAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+                alert.addAction(settings)
+                alert.addAction(close)
+                self.present(alert, animated: true, completion: nil)
+            case .authorized:
+                print("authorized")
+                DispatchQueue.main.async {  // UIの更新
+                    self.present(picker, animated: true, completion: nil)
+                }
+            case .limited:
+                print("limited")
+            @unknown default:
+                print("default")
+            }
+
+        } else {
+            // iOS14未満
+            let auth = PHPhotoLibrary.authorizationStatus()
+
+            switch auth {
+            case .notDetermined:
+                print("notDetermined")
+            case .restricted:
+                print("restricted")
+            case .denied:
+                print("denied")
+            case .authorized:
+                print("authorized")
+            case .limited:
+                print("14未満にはない")
+            @unknown default:
+                print("default")
+            }
+
         }
 
+        //        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+        //
+        //            let imagePickerView = UIImagePickerController()
+        //            imagePickerView.sourceType = .photoLibrary
+        //            imagePickerView.delegate = self
+        //            self.present(imagePickerView, animated: true)
+        //        }
+
     }
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[.originalImage] as! UIImage
-        let resizedImage = image.resized(withPercentage: 0.1)
-        photoImage.image = resizedImage
-        self.dismiss(animated: true, completion: nil)
+    @available(iOS 14, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        // 写真を選択しているかどうか確認
+        if results.count != 0 {
+            results[0].itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image", completionHandler: { data, _ in
+                DispatchQueue.main.async { [self] in // UIの更新
+                    photoImage.image = UIImage(data: data!)! // 画像を設定
+                }
+            })
+        }
+        picker.dismiss(animated: true)
     }
+
+    //    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    //
+    //        let image = info[.originalImage] as! UIImage
+    //        //　圧縮すると実機で変になる
+    //        //        let resizedImage = image.resized(withPercentage: 0.1)
+    //        photoImage.image = image
+    //        self.dismiss(animated: true, completion: nil)
+    //    }
 
     @IBAction func registerButtonTapped(_ sender: Any) {
 
