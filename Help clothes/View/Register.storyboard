@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
@@ -58,20 +58,6 @@
                                     <action selector="registerButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="pvQ-mq-oCb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfd-mi-fzm">
-                                <rect key="frame" x="55" y="63" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="CEp-20-8xu"/>
-                                    <constraint firstAttribute="width" constant="40" id="fac-dK-4Cz"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <color key="tintColor" systemColor="labelColor"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="×"/>
-                                <connections>
-                                    <action selector="deletePhotoTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Uy9-eY-9gL"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81G-Ch-VOU">
                                 <rect key="frame" x="50.5" y="582" width="274" height="50"/>
                                 <constraints>
@@ -97,6 +83,20 @@
                                     <action selector="closeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="M62-aH-mCY"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfd-mi-fzm">
+                                <rect key="frame" x="67" y="23" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="CEp-20-8xu"/>
+                                    <constraint firstAttribute="width" constant="40" id="fac-dK-4Cz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="×"/>
+                                <connections>
+                                    <action selector="deletePhotoTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Uy9-eY-9gL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -104,17 +104,17 @@
                             <constraint firstItem="fDr-fj-1UF" firstAttribute="top" secondItem="R32-LH-hxP" secondAttribute="bottom" id="3pg-IW-fjx"/>
                             <constraint firstItem="Gt9-yn-3Y2" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="63" id="4WF-yI-ffs"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="81G-Ch-VOU" secondAttribute="bottom" constant="35" id="5Hr-sI-Olm"/>
+                            <constraint firstItem="Gt9-yn-3Y2" firstAttribute="top" secondItem="dfd-mi-fzm" secondAttribute="bottom" id="5pp-9w-63t"/>
+                            <constraint firstItem="dfd-mi-fzm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="67" id="8HX-BJ-bI3"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Y64-84-Zzb" secondAttribute="trailing" constant="16" id="HZC-3p-XAd"/>
                             <constraint firstItem="81G-Ch-VOU" firstAttribute="top" secondItem="0tW-It-6oA" secondAttribute="bottom" constant="22" id="MlG-fN-5SL"/>
                             <constraint firstItem="Y64-84-Zzb" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="N6N-dh-pcl"/>
                             <constraint firstItem="81G-Ch-VOU" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Sne-N7-FBx"/>
-                            <constraint firstItem="dfd-mi-fzm" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="63" id="b5f-s0-vyf"/>
                             <constraint firstItem="0tW-It-6oA" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="dQW-aS-Za0"/>
                             <constraint firstItem="Gt9-yn-3Y2" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="ehM-ym-i8U"/>
                             <constraint firstItem="fDr-fj-1UF" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="f0q-gM-igl"/>
                             <constraint firstItem="R32-LH-hxP" firstAttribute="top" secondItem="Gt9-yn-3Y2" secondAttribute="bottom" id="hFf-uL-zkR"/>
                             <constraint firstItem="R32-LH-hxP" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="ufq-Ob-yV8"/>
-                            <constraint firstItem="dfd-mi-fzm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="55" id="x8G-dz-m37"/>
                         </constraints>
                     </view>
                     <connections>

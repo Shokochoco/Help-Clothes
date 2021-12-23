@@ -20,10 +20,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     var itemPickerNum: Int?
     var tempPickerNum: Int?
     var photoData: Data?
-    // ドキュメントディレクトリの「ファイルURL」（URL型）定義
-    //    var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    // ドキュメントディレクトリの「パス」（String型）定義
-    //    let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +34,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         registerButton.backgroundColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
         deleteButton.layer.borderWidth = 3
         deleteButton.layer.borderColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0).cgColor
-        deleteButton.tintColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
+        deleteButton.tintColor = .label //UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
         deleteButton.layer.cornerRadius = 25
         choosePhotoButton.tintColor = .lightGray
     }
@@ -124,38 +120,24 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 }
             case .limited:
                 print("limited")
+                DispatchQueue.main.async {  // UIの更新
+                    self.present(picker, animated: true, completion: nil)
+                }
             @unknown default:
                 print("default")
             }
 
         } else {
             // iOS14未満
-            let auth = PHPhotoLibrary.authorizationStatus()
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
 
-            switch auth {
-            case .notDetermined:
-                print("notDetermined")
-            case .restricted:
-                print("restricted")
-            case .denied:
-                print("denied")
-            case .authorized:
-                print("authorized")
-            case .limited:
-                print("14未満にはない")
-            @unknown default:
-                print("default")
+                let imagePickerView = UIImagePickerController()
+                imagePickerView.sourceType = .photoLibrary
+                imagePickerView.delegate = self
+                self.present(imagePickerView, animated: true)
             }
 
         }
-
-        //        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-        //
-        //            let imagePickerView = UIImagePickerController()
-        //            imagePickerView.sourceType = .photoLibrary
-        //            imagePickerView.delegate = self
-        //            self.present(imagePickerView, animated: true)
-        //        }
 
     }
 
@@ -165,21 +147,24 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         if results.count != 0 {
             results[0].itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image", completionHandler: { data, _ in
                 DispatchQueue.main.async { [self] in // UIの更新
-                    photoImage.image = UIImage(data: data!)! // 画像を設定
+                    if let imageData = UIImage(data: data!) {
+                        photoImage.image = imageData.resized(withPercentage: 0.5) // 画像を設定
+                    }
+
                 }
             })
         }
         picker.dismiss(animated: true)
     }
 
-    //    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    //
-    //        let image = info[.originalImage] as! UIImage
-    //        //　圧縮すると実機で変になる
-    //        //        let resizedImage = image.resized(withPercentage: 0.1)
-    //        photoImage.image = image
-    //        self.dismiss(animated: true, completion: nil)
-    //    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        let image = info[.originalImage] as! UIImage
+        //　1/10で圧縮すると実機で変になるので半分
+        let resizedImage = image.resized(withPercentage: 0.5)
+        photoImage.image = resizedImage
+        self.dismiss(animated: true, completion: nil)
+    }
 
     @IBAction func registerButtonTapped(_ sender: Any) {
 
