@@ -53,7 +53,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
 
     @IBAction func deletePhotoTapped(_ sender: Any) {
-        showAlert(title: "写真を削除しますか？", message: "")
+        if photoImage.image != UIImage(named: "no-image") {
+            showAlert(title: "写真を削除しますか？", message: "")
+        }
+
     }
 
     private func showAlert(title: String, message: String) {

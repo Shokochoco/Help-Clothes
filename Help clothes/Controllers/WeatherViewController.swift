@@ -44,21 +44,14 @@ class WeatherViewController: UIViewController {
     }
 
     func addBackground(name: String) {
-            // スクリーンサイズの取得
+           
             let width = UIScreen.main.bounds.size.width
             let height = UIScreen.main.bounds.size.height
 
-            // スクリーンサイズにあわせてimageViewの配置
             let imageViewBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-            //imageViewに背景画像を表示
             imageViewBackground.image = UIImage(named: name)
-
-            // 画像の表示モードを変更。
             imageViewBackground.contentMode = UIView.ContentMode.scaleAspectFill
-
-            // subviewをメインビューに追加
             view.addSubview(imageViewBackground)
-            // 加えたsubviewを、最背面に設置する
             view.sendSubviewToBack(imageViewBackground)
         }
 
@@ -116,7 +109,7 @@ class WeatherViewController: UIViewController {
         content.sound = UNNotificationSound.default
         // Trigger決める
         let date = DateComponents(hour:7, minute:30)
-        let trigger = UNCalendarNotificationTrigger.init(dateMatching: date, repeats: true)
+        let trigger = UNCalendarNotificationTrigger.init(dateMatching: date, repeats: false)
         // リクエストをセットしてaddする
         let request: UNNotificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
