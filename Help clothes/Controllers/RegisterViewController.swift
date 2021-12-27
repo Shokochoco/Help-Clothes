@@ -6,7 +6,7 @@ import PhotosUI
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
 
     var leftData = ["トップス", "ボトムス", "シューズ"]
-    var rightData = ["暑い日用", "暖かい日用","涼しい日用","寒い日用", "いつでも"]
+    var rightData = ["暑い日用", "暖かい日用","涼しい日用","寒い日用"]
 
     @IBOutlet weak var choosePhotoButton: UIButton!
     @IBOutlet weak var registerButton: UIButton!

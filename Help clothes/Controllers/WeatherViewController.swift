@@ -119,6 +119,26 @@ class WeatherViewController: UIViewController {
 // MARK: - CLLocationManager
 extension WeatherViewController: CLLocationManagerDelegate {
 
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        // 位置情報許可
+            switch status {
+            case .authorizedAlways:
+                manager.requestLocation()
+                break
+            case .authorizedWhenInUse:
+                manager.requestAlwaysAuthorization()
+                break
+            case .notDetermined:
+                break
+            case .restricted:
+                break
+            case .denied:
+                break
+            default:
+                break
+            }
+        }
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
@@ -174,4 +194,3 @@ extension WeatherViewController: WeatherDelegate {
         print(error)
     }
 }
-
