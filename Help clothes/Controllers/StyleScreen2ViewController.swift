@@ -41,21 +41,32 @@ class StyleScreen2ViewController: UIViewController {
             switch section {
             case .Tops:
                 let sectionResult = result.filter("itemData == 'TOPS'")
-                guard let topsResult = sectionResult.randomElement() else { return }
-                self.topsImage.image = UIImage(data: topsResult.photoData!)
-                topsImage.contentMode = .scaleAspectFill
+                if let topsResult = sectionResult.randomElement() {
+                    self.topsImage.image = UIImage(data: topsResult.photoData!)
+                    topsImage.contentMode = .scaleAspectFill
+                } else {
+                    topsImage.image = UIImage(named: "cant-find")
+                }
                 fallthrough
             case .Bottoms:
                 let sectionResult = result.filter("itemData == 'BOTTOMS'")
-                guard let bottomsResult = sectionResult.randomElement() else { return }
-                self.bottomsImage.image = UIImage(data: bottomsResult.photoData!)
-                bottomsImage.contentMode = .scaleAspectFill
+                if let bottomsResult = sectionResult.randomElement() {
+                    self.bottomsImage.image = UIImage(data: bottomsResult.photoData!)
+                    bottomsImage.contentMode = .scaleAspectFill
+                } else {
+                    bottomsImage.image = UIImage(named: "cant-find")
+                }
+
                 fallthrough
             case .Shoes:
                 let sectionResult = result.filter("itemData == 'SHOES'")
-                guard let shoesResult = sectionResult.randomElement() else { return }
-                self.shoesImage.image = UIImage(data: shoesResult.photoData!)
-                shoesImage.contentMode = .scaleAspectFill
+                if let shoesResult = sectionResult.randomElement() {
+                    self.shoesImage.image = UIImage(data: shoesResult.photoData!)
+                    shoesImage.contentMode = .scaleAspectFill
+                } else {
+                    shoesImage.image = UIImage(named: "cant-find")
+                }
+
         }
     }
 

@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "画像が見つかりません.png",
+      "filename" : "cant-find.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "cant-find-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "cant-find-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
