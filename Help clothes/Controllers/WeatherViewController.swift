@@ -76,7 +76,7 @@ class WeatherViewController: UIViewController {
             screen1.weatherMessage = weatherMessage
             self.present(screen1, animated: true, completion: nil)
         } else {
-            alertAction(title: "天気データを先に取得してください", message: "")
+            alertAction(title: "Get weather data firstly", message: "")
         }
 
     }
@@ -89,7 +89,7 @@ class WeatherViewController: UIViewController {
             screen2.tempName = weatherTempData // 変数は統一して良いか？
             self.present(screen2, animated: true, completion: nil)
         } else {
-            alertAction(title: "天気データを先に取得してください", message: "")
+            alertAction(title: "Get weather data firstly", message: "")
         }
     }
 
@@ -105,7 +105,8 @@ class WeatherViewController: UIViewController {
     func pushNotification() {
         // contents決める
         let content: UNMutableNotificationContent = UNMutableNotificationContent()
-        content.title = "今日の服装決まった🌞☂️☁️？"
+        content.title = "Did you choose to wear for today?"
+        content.body = "今日の服装決まった🌞☂️☁️？"
         content.sound = UNNotificationSound.default
         // Trigger決める
         let date = DateComponents(hour:7, minute:30)
@@ -191,6 +192,7 @@ extension WeatherViewController: WeatherDelegate {
     }
 
     func didFailWithError(error: Error) {
+
         print(error)
     }
 }

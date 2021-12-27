@@ -5,8 +5,8 @@ import PhotosUI
 
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
 
-    var leftData = ["トップス", "ボトムス", "シューズ"]
-    var rightData = ["暑い日用", "暖かい日用","涼しい日用","寒い日用"]
+    var leftData = ["TOPS", "BOTTOMS", "SHOES"]
+    var rightData = ["Hot day", "Warm day","Cool day","Cold day"] //　allday追加
 
     @IBOutlet weak var choosePhotoButton: UIButton!
     @IBOutlet weak var registerButton: UIButton!
@@ -54,7 +54,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
 
     @IBAction func deletePhotoTapped(_ sender: Any) {
         if photoImage.image != UIImage(named: "no-image") {
-            showAlert(title: "写真を削除しますか？", message: "")
+            showAlert(title: "Delete photo？", message: "")
         }
 
     }
@@ -101,29 +101,29 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 }
             case .restricted:
                 print("restricted")
-                let alert = UIAlertController(title: "写真にアクセスできません", message: "", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Can't access to album", message: "", preferredStyle: .alert)
                 let close: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alert.addAction(close)
                 self.present(alert, animated: true, completion: nil)
             case .denied:
                 print("denied")
-                let alert = UIAlertController(title: "写真にアクセスできません", message: "設定からアクセス許可をしてください", preferredStyle: .alert)
-                let settings = UIAlertAction(title: "設定", style: .default, handler: { (_) -> Void in
+                let alert = UIAlertController(title: "Can't access to album", message: "Please set up", preferredStyle: .alert)
+                let settings = UIAlertAction(title: "Set up", style: .default, handler: { (_) -> Void in
                     let settingsURL = URL(string: UIApplication.openSettingsURLString)
                     UIApplication.shared.open(settingsURL!, options: [:], completionHandler: nil)
                 })
-                let close: UIAlertAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+                let close: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                 alert.addAction(settings)
                 alert.addAction(close)
                 self.present(alert, animated: true, completion: nil)
             case .authorized:
                 print("authorized")
-                DispatchQueue.main.async {  // UIの更新
+                DispatchQueue.main.async {
                     self.present(picker, animated: true, completion: nil)
                 }
             case .limited:
                 print("limited")
-                DispatchQueue.main.async {  // UIの更新
+                DispatchQueue.main.async {
                     self.present(picker, animated: true, completion: nil)
                 }
             @unknown default:
@@ -178,7 +178,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         let newPhotoData = photoImage?.image?.pngData()
         // 画像のnilチェック
         if photoImage.image == UIImage(named: "no-image") {
-            alert(title: "画像を選択してください", message: "")
+            alert(title: "Choose a photo", message: "")
         } else {
             // 新規登録 realm用オブジェクト作る
             if itemPickerNum == nil,
@@ -239,7 +239,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
         let result = realm.objects(RealmDataModel.self).filter(predicate)
 
-        let alert = UIAlertController(title: "本当に削除しますか？", message: "一度削除すると戻せません", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Are you sure？", message: "本当に削除しますか？", preferredStyle: .alert)
         let okButton = UIAlertAction(title: "はい", style: .default) { [weak self] _ in
             // 削除処理
             do{
@@ -252,7 +252,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             self?.dismiss(animated: true, completion: nil)
         }
 
-        let cancelButton = UIAlertAction(title: "戻る", style: .cancel, handler: nil)
+        let cancelButton = UIAlertAction(title: "Back", style: .cancel, handler: nil)
         alert.addAction(okButton)
         alert.addAction(cancelButton)
 

@@ -12,15 +12,15 @@ struct WeatherModel {
     var weatherTemp: String {
         switch temperature {
         case -10.0 ..< 13.0:
-            return "寒い日用"
+            return "Cold day"
         case 13.0 ..< 20.0:
-            return "涼しい日用"
+            return "Cool day"
         case 20.0 ..< 25.0:
-            return "暖かい日用"
+            return "Warm day"
         case 25.0...40.0:
-            return "暑い日用"
+            return "Hot day"
         default:
-            return "いつでも"
+            return "Always"
         }
     }
 

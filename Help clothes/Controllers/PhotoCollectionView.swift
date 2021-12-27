@@ -98,15 +98,15 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
 
         switch section {
         case MainSection.Tops.rawValue:
-            let filtedResult = result.filter("itemData == 'トップス'")
+            let filtedResult = result.filter("itemData == 'TOPS'")
             return filtedResult.count
 
         case MainSection.Bottoms.rawValue:
-            let filtedResult = result.filter("itemData == 'ボトムス'")
+            let filtedResult = result.filter("itemData == 'BOTTOMS'")
             return filtedResult.count
 
         case MainSection.Shoes.rawValue:
-            let filtedResult = result.filter("itemData == 'シューズ'")
+            let filtedResult = result.filter("itemData == 'SHOES'")
             return filtedResult.count
 
         default:
@@ -124,19 +124,19 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
 
         switch (indexPath.section) {
         case MainSection.Tops.rawValue:
-            let tops = results.filter("itemData == 'トップス'")
+            let tops = results.filter("itemData == 'TOPS'")
             let imageData = UIImage(data: tops[indexPath.row].photoData!)
             cell.stylePhoto.image = imageData
             cell.stylePhoto.contentMode = .scaleAspectFill
 
         case MainSection.Bottoms.rawValue:
-            let bottoms = results.filter("itemData == 'ボトムス'")
+            let bottoms = results.filter("itemData == 'BOTTOMS'")
             let imageData = UIImage(data: bottoms[indexPath.row].photoData!)
             cell.stylePhoto.image = imageData
             cell.stylePhoto.contentMode = .scaleAspectFill
 
         case MainSection.Shoes.rawValue:
-            let shoes = results.filter("itemData == 'シューズ'")
+            let shoes = results.filter("itemData == 'SHOES'")
             let imageData = UIImage(data: shoes[indexPath.row].photoData!)
             cell.stylePhoto.image = imageData
             cell.stylePhoto.contentMode = .scaleAspectFill
@@ -200,19 +200,19 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         // データを次の画面に渡す
         switch (indexPath.section) {
         case MainSection.Tops.rawValue:
-            let tops = results.filter("itemData == 'トップス'")
+            let tops = results.filter("itemData == 'TOPS'")
             tempData = tops[indexPath.row].tempData
             itemPickerNum = 0
             photoData = tops[indexPath.row].photoData
 
         case MainSection.Bottoms.rawValue:
-            let bottoms = results.filter("itemData == 'ボトムス'")
+            let bottoms = results.filter("itemData == 'BOTTOMS'")
             tempData = bottoms[indexPath.row].tempData
             itemPickerNum = 1
             photoData = bottoms[indexPath.row].photoData
 
         case MainSection.Shoes.rawValue:
-            let shoes = results.filter("itemData == 'シューズ'")
+            let shoes = results.filter("itemData == 'SHOES'")
             tempData = shoes[indexPath.row].tempData
             itemPickerNum = 2
             photoData = shoes[indexPath.row].photoData
@@ -222,13 +222,13 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         }
 
         switch tempData {
-        case "暑い日用":
+        case "Hot day":
             tempPickerNum = 0
-        case "暖かい日用":
+        case "Warm day":
             tempPickerNum = 1
-        case "涼しい日用":
+        case "Cool day":
             tempPickerNum = 2
-        case "寒い日用":
+        case "Cold day":
             tempPickerNum = 3
         case "いつでも":
             tempPickerNum = 4

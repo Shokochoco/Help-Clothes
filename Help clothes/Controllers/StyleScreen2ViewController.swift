@@ -40,19 +40,19 @@ class StyleScreen2ViewController: UIViewController {
 
             switch section {
             case .Tops:
-                let sectionResult = result.filter("itemData == 'トップス'")
+                let sectionResult = result.filter("itemData == 'TOPS'")
                 guard let topsResult = sectionResult.randomElement() else { return }
                 self.topsImage.image = UIImage(data: topsResult.photoData!)
                 topsImage.contentMode = .scaleAspectFill
                 fallthrough
             case .Bottoms:
-                let sectionResult = result.filter("itemData == 'ボトムス'")
+                let sectionResult = result.filter("itemData == 'BOTTOMS'")
                 guard let bottomsResult = sectionResult.randomElement() else { return }
                 self.bottomsImage.image = UIImage(data: bottomsResult.photoData!)
                 bottomsImage.contentMode = .scaleAspectFill
                 fallthrough
             case .Shoes:
-                let sectionResult = result.filter("itemData == 'シューズ'")
+                let sectionResult = result.filter("itemData == 'SHOES'")
                 guard let shoesResult = sectionResult.randomElement() else { return }
                 self.shoesImage.image = UIImage(data: shoesResult.photoData!)
                 shoesImage.contentMode = .scaleAspectFill
