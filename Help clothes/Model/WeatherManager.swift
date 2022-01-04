@@ -4,7 +4,7 @@ import Alamofire
 import CoreLocation
 
 protocol WeatherDelegate: AnyObject {
-   func didUpdateWeather(_ requests: WeatherManager,weather: WeatherModel)
+   func didUpdateWeather(_ requests: WeatherManager, weather: WeatherModel)
    func didFailWithError(error: Error)
 }
 
@@ -18,19 +18,18 @@ struct WeatherManager {
         let cityURL = "\(weatherURL)&q=\(cityName)"
         performRequest(with: cityURL)
     }
-    
+
     func fetchLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let cityURL = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
         performRequest(with: cityURL)
     }
 
-    func performRequest(with weatherURL: String)  {
+    func performRequest(with weatherURL: String) {
 
         let request = AF.request(weatherURL)
-        request.responseJSON { response in
-            guard let data = response.data else { return }
+        request.responseJSON { response in guard let data = response.data else { return }
             if let safeData = self.changeForm(data) {
-                //safeDataをViewに渡して各種配置につける
+                // safeDataをViewに渡して各種配置につける
                 self.delegate?.didUpdateWeather(self, weather: safeData)
             }
         }
@@ -54,6 +53,4 @@ struct WeatherManager {
             return nil
         }
     }
-
-
 }

@@ -11,9 +11,9 @@ struct WeatherModel {
 
     var weatherTemp: String {
         switch temperature {
-        case -10.0 ..< 13.0:
+        case -10.0 ..< 10.0:
             return "Cold day"
-        case 13.0 ..< 20.0:
+        case 10.0 ..< 20.0:
             return "Cool day"
         case 20.0 ..< 25.0:
             return "Warm day"

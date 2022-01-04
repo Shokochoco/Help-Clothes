@@ -17,5 +17,6 @@ target 'Help clothes' do
   end
    pod 'Alamofire', '~> 5.4'
    pod 'RealmSwift'
+   pod 'SwiftLint'
 
 end

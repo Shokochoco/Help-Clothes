@@ -1,19 +1,18 @@
 import UIKit
 import CoreLocation
 
-class WeatherViewController: UIViewController {
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var temperatureLabel: UILabel!
-    @IBOutlet weak var tempImage: UIImageView!
-    @IBOutlet weak var style1Button: UIButton!
-    @IBOutlet weak var style2Button: UIButton!
-    
-    var weatherManager = WeatherManager()
-    let locationManager = CLLocationManager()
+final class WeatherViewController: UIViewController {
+    @IBOutlet private weak var searchTextField: UITextField!
+    @IBOutlet private weak var cityLabel: UILabel!
+    @IBOutlet private weak var temperatureLabel: UILabel!
+    @IBOutlet private weak var tempImage: UIImageView!
+    @IBOutlet private weak var style1Button: UIButton!
+    @IBOutlet private weak var style2Button: UIButton!
+
+    private var weatherManager = WeatherManager()
+    private let locationManager = CLLocationManager()
     var weatherTempData: String? // 気温の変数
     var weatherMessage: String?
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,29 +21,29 @@ class WeatherViewController: UIViewController {
         locationManager.delegate = self //　デリゲートを先にセット
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
-        searchTextField.delegate = self
+        searchTextField?.delegate = self
         weatherManager.delegate = self
     }
 
-    func layoutSetup() {
+    private func layoutSetup() {
         addBackground(name: "background")
-        cityLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
-        style1Button.backgroundColor = .clear
-        style1Button.layer.borderWidth = 3
-        style1Button.layer.borderColor = UIColor.white.cgColor
-        style1Button.layer.cornerRadius = 30
-        style1Button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        cityLabel?.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+        style1Button?.backgroundColor = .clear
+        style1Button?.layer.borderWidth = 3
+        style1Button?.layer.borderColor = UIColor.white.cgColor
+        style1Button?.layer.cornerRadius = 30
+        style1Button?.setTitleColor(UIColor.white, for: UIControl.State.normal)
 
-        style2Button.backgroundColor = .clear
-        style2Button.layer.borderWidth = 3
-        style2Button.layer.borderColor = UIColor.white.cgColor
-        style2Button.layer.cornerRadius = 30
-        style2Button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        style2Button?.backgroundColor = .clear
+        style2Button?.layer.borderWidth = 3
+        style2Button?.layer.borderColor = UIColor.white.cgColor
+        style2Button?.layer.cornerRadius = 30
+        style2Button?.setTitleColor(UIColor.white, for: UIControl.State.normal)
 
     }
 
-    func addBackground(name: String) {
-           
+    private func addBackground(name: String) {
+
             let width = UIScreen.main.bounds.size.width
             let height = UIScreen.main.bounds.size.height
 
@@ -54,62 +53,56 @@ class WeatherViewController: UIViewController {
             view.addSubview(imageViewBackground)
             view.sendSubviewToBack(imageViewBackground)
         }
-
+    // MARK: - Button Tapped
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             view.endEditing(true)
         }
 
-    @IBAction func searchButtonTapped(_ sender: Any) {
+    @IBAction private func searchButtonTapped(_ sender: Any) {
         searchTextField.endEditing(true)
     }
 
-    @IBAction func locationButtonTapped(_ sender: Any) {
+    @IBAction private func locationButtonTapped(_ sender: Any) {
         locationManager.requestLocation()
     }
 
-    @IBAction func styleButton1Tapped(_ sender: Any) {
-        // 天気データ取得できてるか確認する
+    @IBAction private func styleButton1Tapped(_ sender: Any) {
+
         if let weatherTempData = weatherTempData {
             let storyboard = UIStoryboard(name: "StyleScreen1", bundle: nil)
             guard let screen1 = storyboard.instantiateViewController(withIdentifier: "StyleScreen1") as? StyleScreen1ViewController else { return }
-            screen1.weatherData = weatherTempData // 変数名は統一して良いか？
+            screen1.weatherTempData = weatherTempData
             screen1.weatherMessage = weatherMessage
             self.present(screen1, animated: true, completion: nil)
         } else {
-            alertAction(title: "Get weather data firstly", message: "")
+            UIAlertController.alertShow(vcon: self, title: "Get weather data firstly", message: "" )
         }
 
     }
 
-    @IBAction func styleButton2Tapped(_ sender: Any) {
+    @IBAction private func styleButton2Tapped(_ sender: Any) {
 
         if let weatherTempData = weatherTempData {
             let storyboard = UIStoryboard(name: "StyleScreen2", bundle: nil)
             guard let screen2 = storyboard.instantiateViewController(withIdentifier: "StyleScreen2") as? StyleScreen2ViewController else { return }
-            screen2.tempName = weatherTempData // 変数は統一して良いか？
+            screen2.weatherTempData = weatherTempData
             self.present(screen2, animated: true, completion: nil)
         } else {
-            alertAction(title: "Get weather data firstly", message: "")
+            UIAlertController.alertShow(vcon: self, title: "Get weather data firstly", message: "" )
         }
-    }
-
-    func alertAction(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(okButton)
-        self.present(alert, animated: true, completion: nil)
     }
 
     // MARK: - Push Notification
 
-    func pushNotification() {
+    private func pushNotification() {
         // contents決める
         let content: UNMutableNotificationContent = UNMutableNotificationContent()
         content.title = "Did you choose to wear for today?"
         content.body = "今日の服装決まった🌞☂️☁️？"
         content.sound = UNNotificationSound.default
         // Trigger決める
-        let date = DateComponents(hour:7, minute:30)
+        let date = DateComponents(hour: 7, minute: 30)
         let trigger = UNCalendarNotificationTrigger.init(dateMatching: date, repeats: false)
         // リクエストをセットしてaddする
         let request: UNNotificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
@@ -125,10 +118,8 @@ extension WeatherViewController: CLLocationManagerDelegate {
             switch status {
             case .authorizedAlways:
                 manager.requestLocation()
-                break
             case .authorizedWhenInUse:
                 manager.requestAlwaysAuthorization()
-                break
             case .notDetermined:
                 break
             case .restricted:
@@ -155,7 +146,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
 }
 // MARK: - TextFieldDelegate
 extension WeatherViewController: UITextFieldDelegate {
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextField.endEditing(true)
     }
@@ -180,7 +171,7 @@ extension WeatherViewController: UITextFieldDelegate {
 // MARK: - WeatherDelegate
 extension WeatherViewController: WeatherDelegate {
     func didUpdateWeather(_ requests: WeatherManager, weather: WeatherModel) {
-        
+
         weatherTempData = weather.weatherTemp
         weatherMessage = weather.conditionMessage
 
@@ -194,5 +185,15 @@ extension WeatherViewController: WeatherDelegate {
     func didFailWithError(error: Error) {
 
         print(error)
+    }
+}
+// MARK: - UIAlertController
+extension UIAlertController {
+
+    static func alertShow(vcon: UIViewController, title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okButton)
+        vcon.present(alert, animated: true, completion: nil)
     }
 }

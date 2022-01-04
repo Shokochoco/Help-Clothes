@@ -3,16 +3,16 @@ import UIKit
 import RealmSwift
 import PhotosUI
 
-class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
+final class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
 
-    var leftData = ["TOPS", "BOTTOMS", "SHOES"]
-    var rightData = ["Hot day", "Warm day","Cool day","Cold day"] //　allday追加
+    private let leftData = ["TOPS", "BOTTOMS", "SHOES"]
+    private let rightData = ["Hot day", "Warm day", "Cool day", "Cold day"]
 
-    @IBOutlet weak var choosePhotoButton: UIButton!
-    @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var pickerView: UIPickerView!
-    @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var photoImage: UIImageView! {
+    @IBOutlet private weak var choosePhotoButton: UIButton!
+    @IBOutlet private weak var registerButton: UIButton!
+    @IBOutlet private weak var pickerView: UIPickerView!
+    @IBOutlet private weak var deleteButton: UIButton!
+    @IBOutlet private weak var photoImage: UIImageView! {
         didSet {
             self.photoImage.image = UIImage(named: "no-image")
         }
@@ -34,7 +34,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         registerButton.backgroundColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
         deleteButton.layer.borderWidth = 3
         deleteButton.layer.borderColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0).cgColor
-        deleteButton.tintColor = .label //UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
+        deleteButton.tintColor = .label
         deleteButton.layer.cornerRadius = 25
         choosePhotoButton.tintColor = .lightGray
     }
@@ -51,8 +51,9 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             deleteButton.isHidden = true
         }
     }
+// MARK: - Button Tapped
 
-    @IBAction func deletePhotoTapped(_ sender: Any) {
+    @IBAction private func deletePhotoTapped(_ sender: Any) {
         if photoImage.image != UIImage(named: "no-image") {
             showAlert(title: "Delete photo？", message: "")
         }
@@ -71,7 +72,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         present(alert, animated: true, completion: nil)
     }
 
-    @IBAction func selectPhotoTapped(_ sender: Any) {
+    @IBAction private func selectPhotoTapped(_ sender: Any) {
 
         if #available(iOS 14, *) {
             // カメラロール設定
@@ -108,7 +109,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             case .denied:
                 print("denied")
                 let alert = UIAlertController(title: "Can't access to album", message: "Please set up", preferredStyle: .alert)
-                let settings = UIAlertAction(title: "Set up", style: .default, handler: { (_) -> Void in
+                let settings = UIAlertAction(title: "Set up", style: .default, handler: { _ -> Void in
                     let settingsURL = URL(string: UIApplication.openSettingsURLString)
                     UIApplication.shared.open(settingsURL!, options: [:], completionHandler: nil)
                 })
@@ -151,7 +152,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             results[0].itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image", completionHandler: { data, _ in
                 DispatchQueue.main.async { [self] in // UIの更新
                     if let imageData = UIImage(data: data!) {
-                        photoImage.image = imageData.resized(withPercentage: 0.5) // 画像を設定
+                        photoImage.image = imageData.resized(withPercentage: 0.5)
                     }
 
                 }
@@ -159,8 +160,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         picker.dismiss(animated: true)
     }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    // iOS14未満
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
 
         let image = info[.originalImage] as! UIImage
         //　1/10で圧縮すると実機で変になるので半分
@@ -169,7 +170,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func registerButtonTapped(_ sender: Any) {
+    @IBAction private func registerButtonTapped(_ sender: Any) {
 
         print(Realm.Configuration.defaultConfiguration.fileURL!)
         // 新しい値
@@ -193,20 +194,20 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
 
                 let realm = try! Realm()
 
-                do{
-                    try realm.write{
+                do {
+                    try realm.write {
                         //　新規
                         realm.add(realmData)
                     }
-                }catch {
+                } catch {
                     print("新規登録 \(error)")
 
                 }
             } else {
                 let realm = try! Realm()
 
-                do{
-                    try realm.write{
+                do {
+                    try realm.write {
                         //　更新はこの中で
                         let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
                         let result = realm.objects(RealmDataModel.self).filter(predicate)
@@ -215,7 +216,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                         result.first?.tempData = rightData[tempLow]
                         result.first?.photoData = newPhotoData
                     }
-                }catch {
+                } catch {
                     print("更新\(error)")
 
                 }
@@ -233,7 +234,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         present(alert, animated: true, completion: nil)
     }
 
-    @IBAction func deleteItemButtonTapped(_ sender: Any) {
+    @IBAction private func deleteItemButtonTapped(_ sender: Any) {
 
         let realm = try! Realm()
         let predicate = NSPredicate(format: "itemData == %@ && tempData == %@ && photoData == %@", leftData[itemPickerNum!], rightData[tempPickerNum!], photoData! as CVarArg)
@@ -242,11 +243,11 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         let alert = UIAlertController(title: "Are you sure？", message: "本当に削除しますか？", preferredStyle: .alert)
         let okButton = UIAlertAction(title: "はい", style: .default) { [weak self] _ in
             // 削除処理
-            do{
-                try realm.write{
+            do {
+                try realm.write {
                     realm.delete(result)
                 }
-            }catch {
+            } catch {
                 print("削除 \(error)")
             }
             self?.dismiss(animated: true, completion: nil)
@@ -259,11 +260,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         present(alert, animated: true, completion: nil)
 
     }
-    
-    @IBAction func closeButtonTapped(_ sender: Any) {
+
+    @IBAction private func closeButtonTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
 }
+// MARK: - PickerView
 
 extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
@@ -292,26 +294,14 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return "error"
         }
     }
-    //　PickerViewの値取得
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch component {
-        case 0:
-            leftData[row]
-        case 1:
-            rightData[row]
-        default:
-            "error"
-        }
-    }
 
 }
 // MARK: - Compress UIImage
 extension UIImage {
-    //データサイズを変更する
+    // データサイズを変更する
     func resized(withPercentage percentage: CGFloat) -> UIImage? {
         let canvas = CGSize(width: size.width * percentage, height: size.height * percentage)
-        return UIGraphicsImageRenderer(size: canvas, format: imageRendererFormat).image {
-            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        return UIGraphicsImageRenderer(size: canvas, format: imageRendererFormat).image { _ in draw(in: CGRect(origin: .zero, size: canvas))
         }
     }
 }

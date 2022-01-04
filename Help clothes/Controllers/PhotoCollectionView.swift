@@ -3,39 +3,33 @@ import UIKit
 import RealmSwift
 
 enum MainSection: Int, CaseIterable {
-    case Tops
-    case Bottoms
-    case Shoes
+    case tops
+    case bottoms
+    case shoes
 }
 
-class PhotoCollectionView: UIViewController {
+final class PhotoCollectionView: UIViewController {
 
-    @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var itemNumber: UILabel!
+    @IBOutlet private weak var registerButton: UIButton!
+    @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var itemNumber: UILabel!
     // 受け渡し用
     var tempPickerNum: Int?
     var itemPickerNum: Int?
     var tempData: String?
     var photoData: Data?
-    
-    // データの差分更新（表示状態を管理）
-    //    private var snapshot: NSDiffableDataSourceSnapshot<MainSection, RealmDataModel>!
-    // セル要素に表示するためのデータを結びつける
-    //    private var dataSource: UICollectionViewDiffableDataSource<MainSection, RealmDataModel>! = nil
-
     // セクション毎のレイアウト
     private lazy var compositionalLayout: UICollectionViewCompositionalLayout = {
-        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, _ : NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             switch sectionIndex {
-            case MainSection.Tops.rawValue:
-                return self?.createTopsLayout()
+            case MainSection.tops.rawValue:
+                return self?.createLayout()
 
-            case MainSection.Bottoms.rawValue:
-                return self?.createTopsLayout() // 一旦Topsのメソッドで
+            case MainSection.bottoms.rawValue:
+                return self?.createLayout() // レイアウト変える時はここのメソッド
 
-            case MainSection.Shoes.rawValue:
-                return self?.createTopsLayout() // 一旦Topsのメソッドで
+            case MainSection.shoes.rawValue:
+                return self?.createLayout() // レイアウト変える時はここのメソッド
             default:
                 fatalError()
             }
@@ -57,7 +51,7 @@ class PhotoCollectionView: UIViewController {
 
     }
 
-    func layoutSetup() {
+    private func layoutSetup() {
         registerButton.layer.cornerRadius = 32
         registerButton.backgroundColor = UIColor(red: 19/255, green: 15/255, blue: 64/255, alpha: 1.0)
         collectionView.backgroundColor = UIColor(red: 225/255, green: 240/255, blue: 249/255, alpha: 1.0)
@@ -69,14 +63,14 @@ class PhotoCollectionView: UIViewController {
         itemNumberCount()
     }
 
-    func itemNumberCount() {
+    private func itemNumberCount() {
         let realm = try! Realm()
         let results = realm.objects(RealmDataModel.self)
         itemNumber.text = String("Item  \(results.count)")
         itemNumber.textColor = .lightGray
     }
 
-    @IBAction func addButtonTapped(_ sender: Any) {
+    @IBAction private func addButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Register", bundle: nil)
         let registerView = storyboard.instantiateViewController(withIdentifier: "register")
         registerView.modalPresentationStyle = .fullScreen
@@ -97,15 +91,15 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         let result = realm.objects(RealmDataModel.self)
 
         switch section {
-        case MainSection.Tops.rawValue:
+        case MainSection.tops.rawValue:
             let filtedResult = result.filter("itemData == 'TOPS'")
             return filtedResult.count
 
-        case MainSection.Bottoms.rawValue:
+        case MainSection.bottoms.rawValue:
             let filtedResult = result.filter("itemData == 'BOTTOMS'")
             return filtedResult.count
 
-        case MainSection.Shoes.rawValue:
+        case MainSection.shoes.rawValue:
             let filtedResult = result.filter("itemData == 'SHOES'")
             return filtedResult.count
 
@@ -122,20 +116,20 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
 
         cell.setUp()
 
-        switch (indexPath.section) {
-        case MainSection.Tops.rawValue:
+        switch indexPath.section {
+        case MainSection.tops.rawValue:
             let tops = results.filter("itemData == 'TOPS'")
             let imageData = UIImage(data: tops[indexPath.row].photoData!)
             cell.stylePhoto.image = imageData
             cell.stylePhoto.contentMode = .scaleAspectFill
 
-        case MainSection.Bottoms.rawValue:
+        case MainSection.bottoms.rawValue:
             let bottoms = results.filter("itemData == 'BOTTOMS'")
             let imageData = UIImage(data: bottoms[indexPath.row].photoData!)
             cell.stylePhoto.image = imageData
             cell.stylePhoto.contentMode = .scaleAspectFill
 
-        case MainSection.Shoes.rawValue:
+        case MainSection.shoes.rawValue:
             let shoes = results.filter("itemData == 'SHOES'")
             let imageData = UIImage(data: shoes[indexPath.row].photoData!)
             cell.stylePhoto.image = imageData
@@ -166,7 +160,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         return UICollectionReusableView()
     }
     // レイアウト
-    private func createTopsLayout() -> NSCollectionLayoutSection {
+    private func createLayout() -> NSCollectionLayoutSection {
 
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/3), heightDimension: .fractionalWidth(1/2))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -193,25 +187,25 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         return section
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         let realm = try! Realm()
         let results = realm.objects(RealmDataModel.self)
-        // データを次の画面に渡す
-        switch (indexPath.section) {
-        case MainSection.Tops.rawValue:
+        // データを次の画面に渡す準備1
+        switch indexPath.section {
+        case MainSection.tops.rawValue:
             let tops = results.filter("itemData == 'TOPS'")
             tempData = tops[indexPath.row].tempData
             itemPickerNum = 0
             photoData = tops[indexPath.row].photoData
 
-        case MainSection.Bottoms.rawValue:
+        case MainSection.bottoms.rawValue:
             let bottoms = results.filter("itemData == 'BOTTOMS'")
             tempData = bottoms[indexPath.row].tempData
             itemPickerNum = 1
             photoData = bottoms[indexPath.row].photoData
 
-        case MainSection.Shoes.rawValue:
+        case MainSection.shoes.rawValue:
             let shoes = results.filter("itemData == 'SHOES'")
             tempData = shoes[indexPath.row].tempData
             itemPickerNum = 2
@@ -230,7 +224,7 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             tempPickerNum = 2
         case "Cold day":
             tempPickerNum = 3
-        case "いつでも":
+        case "Always":
             tempPickerNum = 4
         default:
             print("filterできない")
@@ -239,17 +233,17 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         performSegue(withIdentifier: "segue", sender: nil)
 
     }
-    // セルの中の情報を渡す準備
+    // セルの中の情報を渡す準備2
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         guard let destinationViewController = segue.destination as? RegisterViewController else { return }
         // タップして遷移する場合（このif書かなくていい？）
-        if let indexPath = collectionView.indexPathsForSelectedItems, segue.identifier == "segue" {
+//        if let indexPath = collectionView.indexPathsForSelectedItems, segue.identifier == "segue" {
             destinationViewController.itemPickerNum = itemPickerNum
             destinationViewController.tempPickerNum = tempPickerNum
             destinationViewController.photoData = photoData
             destinationViewController.modalPresentationStyle = .fullScreen
-        }
+//        }
     }
 
 }

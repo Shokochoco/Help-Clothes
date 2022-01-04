@@ -1,16 +1,16 @@
 import UIKit
 import RealmSwift
 
-class StyleScreen1ViewController: UIViewController {
+final class StyleScreen1ViewController: UIViewController {
 
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var imagePhoto: UIImageView! {
+    @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet private weak var imagePhoto: UIImageView! {
         didSet {
             self.imagePhoto.image = UIImage(named: "cant-find")
         }
     }
 
-    var weatherData: String?
+    var weatherTempData: String?
     var weatherMessage: String?
 
     override func viewDidLoad() {
@@ -25,13 +25,12 @@ class StyleScreen1ViewController: UIViewController {
     }
 
     func selectImageFromRealm() {
-        // メインスレッドで行う？
-        //　平均気温に応じて、realmからfilter
+
         DispatchQueue.main.async { [self] in
         let realm = try! Realm()
-        let predicate = NSPredicate(format: "tempData == %@", weatherData!)
+        guard let weatherTempData = weatherTempData else { return }
+        let predicate = NSPredicate(format: "tempData == %@", weatherTempData)
         let result = realm.objects(RealmDataModel.self).filter(predicate)
-        //  気温で取得したデータからランダムでimagePhotoに入れる
         if let randomResult = result.randomElement() {
             self.imagePhoto.image = UIImage(data: randomResult.photoData!)
             imagePhoto.contentMode = .scaleAspectFill

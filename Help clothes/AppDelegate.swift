@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // 通知許可の取得
                 UNUserNotificationCenter.current().requestAuthorization(
-                options: [.alert, .sound]){
+                options: [.alert, .sound]) {
                     (granted, _) in
                     if granted{
                         UNUserNotificationCenter.current().delegate = self
@@ -22,8 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 return true
     }
-
-
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -50,4 +48,3 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         }
 }
-

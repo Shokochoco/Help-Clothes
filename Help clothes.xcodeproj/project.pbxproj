@@ -264,6 +264,7 @@
 				D8ACFEAE2748D65900846103 /* Frameworks */,
 				D8ACFEAF2748D65900846103 /* Resources */,
 				DD72A041E69B235EF5BCD7AD /* [CP] Embed Pods Frameworks */,
+				D8989D002784297D00A8C1BC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -449,6 +450,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Help clothes-Help clothesUITests/Pods-Help clothes-Help clothesUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D8989D002784297D00A8C1BC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which \"${PODS_ROOT}/SwiftLint/swiftlint\" >/dev/null; then\n${PODS_ROOT}/SwiftLint/swiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		DD72A041E69B235EF5BCD7AD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -687,12 +705,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 7AAG7H24T5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Help clothes/Info.plist";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "位置情報を利用します";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "カメラロールを利用します";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We get your current location to select suitable clothes";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We access to your photo library to select suitable clothes";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -719,12 +737,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 7AAG7H24T5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Help clothes/Info.plist";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "位置情報を利用します";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "カメラロールを利用します";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We get your current location to select suitable clothes";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We access to your photo library to select suitable clothes";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
